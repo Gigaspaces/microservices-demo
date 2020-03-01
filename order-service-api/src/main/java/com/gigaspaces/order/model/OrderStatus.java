@@ -1,11 +1,11 @@
 package com.gigaspaces.order.model;
 
-public class GetOrderStatusResponse {
+public class OrderStatus {
 
     private String orderId;
     private Status status;
 
-    public GetOrderStatusResponse() {
+    public OrderStatus() {
     }
 
     public String getOrderId() {

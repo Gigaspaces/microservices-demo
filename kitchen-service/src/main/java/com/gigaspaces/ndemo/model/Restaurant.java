@@ -1,4 +1,4 @@
-package com.gigaspaces.ndemo;
+package com.gigaspaces.ndemo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gigaspaces.annotation.pojo.SpaceId;

@@ -4,9 +4,6 @@ import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,19 +18,19 @@ public class GatewayController {
     @Autowired
     private ServicesDiscovery servicesDiscovery;
 
-    @GetMapping("/restaurant")
-    public Restaurant[] getRestaurants() throws Exception {
-        return wrap("gateway-get-restaurant", () ->
-                restTemplate.getForEntity(servicesDiscovery.getKitchenServiceUrl() + "/restaurant", Restaurant[].class).getBody()
-        );
-    }
-
-    @PostMapping("/restaurant")
-    public Restaurant addRestaurant(@RequestBody CreateRestaurantRequest createRestaurantRequest) throws Exception {
-        return wrap("gateway-add-restaurant", () ->
-                restTemplate.postForEntity(servicesDiscovery.getKitchenServiceUrl() + "/restaurant", createRestaurantRequest, Restaurant.class).getBody()
-        );
-    }
+//    @GetMapping("/restaurant")
+//    public Restaurant[] getRestaurants() throws Exception {
+//        return wrap("gateway-get-restaurant", () ->
+//                restTemplate.getForEntity(servicesDiscovery.getKitchenServiceUrl() + "/restaurant", Restaurant[].class).getBody()
+//        );
+//    }
+//
+//    @PostMapping("/restaurant")
+//    public Restaurant addRestaurant(@RequestBody CreateRestaurantRequest createRestaurantRequest) throws Exception {
+//        return wrap("gateway-add-restaurant", () ->
+//                restTemplate.postForEntity(servicesDiscovery.getKitchenServiceUrl() + "/restaurant", createRestaurantRequest, Restaurant.class).getBody()
+//        );
+//    }
 
 
     public <T> T wrap(String name, Callable<T> c) throws Exception {

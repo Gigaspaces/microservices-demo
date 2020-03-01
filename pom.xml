@@ -6,10 +6,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>gateway-api</module>
-        <module>kitchen-service</module>
         <module>orders-service</module>
         <module>delivery-service</module>
         <module>kitchen-service-api</module>
+        <module>kitchen-service</module>
+        <module>kitchen-space</module>
         <module>order-service-api</module>
         <module>delivery-service-api</module>
     </modules>

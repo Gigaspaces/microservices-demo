@@ -1,6 +1,6 @@
 package com.gigaspaces.ndemo;
 
-import com.gigaspaces.order.model.GetOrderStatusResponse;
+import com.gigaspaces.order.model.OrderStatus;
 import com.gigaspaces.order.model.PlaceOrderRequest;
 import com.gigaspaces.order.model.UpdateOrderRequest;
 import io.opentracing.Span;
@@ -23,18 +23,17 @@ public class OrdersController {
 
 
     @GetMapping("/order/status")
-    public GetOrderStatusResponse getOrderStatus(@RequestBody String orderId) {
+    public OrderStatus getOrderStatus(@RequestBody String orderId) {
         throw new UnsupportedOperationException("TBD");
     }
 
     @PostMapping("/order/place")
-    public void placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) {
+    public OrderStatus placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) {
         throw new UnsupportedOperationException("TBD");
-
     }
 
     @PostMapping("/order/status")
-    public void updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
+    public OrderStatus updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
         throw new UnsupportedOperationException("TBD");
     }
 

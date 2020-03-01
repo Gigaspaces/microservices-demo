@@ -4,19 +4,10 @@ import java.util.List;
 
 public class PlaceOrderRequest {
 
-    private String orderId;
     private String resturantId;
     private List<String> menuItemsIds;
 
     public PlaceOrderRequest() {
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
     }
 
     public String getResturantId() {
