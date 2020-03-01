@@ -10,6 +10,8 @@
         <module>orders-service</module>
         <module>delivery-service</module>
         <module>kitchen-service-api</module>
+        <module>order-service-api</module>
+        <module>delivery-service-api</module>
     </modules>
 
     <groupId>com.gigaspaces.microservices.demo</groupId>

@@ -1,10 +1,13 @@
 package com.gigaspaces.ndemo;
 
-import com.gigaspaces.ndemo.model.Pojo;
+import com.gigaspaces.order.model.DeliverOrderRequest;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.openspaces.core.GigaSpace;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.Callable;
@@ -12,13 +15,12 @@ import java.util.concurrent.Callable;
 @RestController
 public class DeliveryController {
 
-    @GetMapping("/test")
-    public Pojo getTest() throws Exception {
-        return wrap("DeliveryService-GetOrder", () ->
-                new Pojo("Dummy data", 123)
+    @Autowired
+    GigaSpace gigaSpace;
 
-        );
-
+    @PostMapping("/delivery")
+    public void deliverOrder(@RequestBody DeliverOrderRequest deliverOrderRequest) {
+        throw new UnsupportedOperationException("TBD");
     }
 
 

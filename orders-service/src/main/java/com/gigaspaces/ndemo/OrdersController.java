@@ -1,10 +1,16 @@
 package com.gigaspaces.ndemo;
 
-import com.gigaspaces.ndemo.model.Pojo;
+import com.gigaspaces.order.model.GetOrderStatusResponse;
+import com.gigaspaces.order.model.PlaceOrderRequest;
+import com.gigaspaces.order.model.UpdateOrderRequest;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
+import org.openspaces.core.GigaSpace;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.Callable;
@@ -12,12 +18,24 @@ import java.util.concurrent.Callable;
 @RestController
 public class OrdersController {
 
-    @GetMapping("/test")
-    public Pojo getTest() throws Exception {
-        return wrap("OrderService-GetOrder", () ->
-                new Pojo("Dummy data", 123)
-        );
+    @Autowired
+    GigaSpace gigaSpace;
 
+
+    @GetMapping("/order/status")
+    public GetOrderStatusResponse getOrderStatus(@RequestBody String orderId) {
+        throw new UnsupportedOperationException("TBD");
+    }
+
+    @PostMapping("/order/place")
+    public void placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) {
+        throw new UnsupportedOperationException("TBD");
+
+    }
+
+    @PostMapping("/order/status")
+    public void updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
+        throw new UnsupportedOperationException("TBD");
     }
 
 
