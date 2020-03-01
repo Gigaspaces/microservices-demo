@@ -6,6 +6,11 @@
 # Orders Service (8183)
 
 
+# Run Zipkin on docker container
+
+docker run -it -p 9411:9411 openzipkin/zipkin
+
+
 # Add a restaurant
 
 curl -X POST \
