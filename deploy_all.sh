@@ -1,16 +1,33 @@
 #!/bin/bash
-set -e
 
 if [[ "$1" == "compile" ]]; then
+    set -e
     mvn clean package -DskipTests -o
+    set +e
 fi
 
-function deploy {
+function waitformanager {
+    curl http://localhost:8090 >/dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+	echo "Waiting for manager..."
+        sleep 1s
+	waitformanager
+    fi
+}
+
+function deploywar {
     ${GS_DIR}/bin/gs.sh pu deploy $1 $1/target/$1.war
 }
 
+function deployjar {
+    ${GS_DIR}/bin/gs.sh pu deploy $1 $1/target/$1.jar
+}
 
-deploy gateway-api
-deploy delivery-service
-deploy kitchen-service
-deploy orders-service
+waitformanager
+
+#deploy delivery-service
+deployjar kitchen-space
+deploywar kitchen-service
+#deploy orders-service
+deploywar gateway-api
+

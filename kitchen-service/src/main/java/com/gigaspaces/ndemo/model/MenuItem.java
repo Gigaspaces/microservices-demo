@@ -1,23 +1,21 @@
 package com.gigaspaces.ndemo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gigaspaces.annotation.pojo.SpaceId;
 
-public class Restaurant {
+public class MenuItem {
     private String id;
     private String name;
-    private String region;
+    private String restaurantId;
 
-    public Restaurant() {
+    public MenuItem() {
     }
 
-    public Restaurant(String name, String region) {
+    public MenuItem(String name, String restaurantId) {
         this.name = name;
-        this.region = region;
+        this.restaurantId = restaurantId;
     }
 
     @SpaceId(autoGenerate = true)
-    @JsonIgnore
     public String getId() {
         return id;
     }
@@ -34,12 +32,11 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getRegion() {
-        return region;
+    public String getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
-
 }
