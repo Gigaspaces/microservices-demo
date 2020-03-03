@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static com.gigaspaces.ndemo.TracingUtils.wrap;
 
 @RestController
 public class KitchenController {
@@ -24,6 +27,8 @@ public class KitchenController {
     @Autowired
     private GigaSpace gigaSpace;
 
+    @Autowired
+    private Kitchen kitchen;
 
     //getMenus
     @GetMapping("/menus")
@@ -57,55 +62,11 @@ public class KitchenController {
     }
 
 
-    //prepareOrder
     @PostMapping("/order/prepare")
-    public void prepareOrder(PrepareOrderRequest request){
-        //TODO
-    }
-
-
-
-
-
-//    @GetMapping("/restaurant")
-//    public Restaurant[] getRestaurants() throws Exception {
-//        return wrap("kitchen-get-restaurant", () ->
-//                gigaSpace.readMultiple(new Restaurant())
-//        );
-//    }
-//
-//    @PostMapping("/restaurant")
-//    public Restaurant addRestaurant(@RequestBody CreateRestaurantRequest createRestaurantRequest) throws Exception {
-//        return wrap("kitchen-add-restaurant", () -> {
-//                    Restaurant restaurant = new Restaurant(createRestaurantRequest.getName(), createRestaurantRequest.getRegion());
-//                    gigaSpace.write(restaurant);
-//                    return restaurant;
-//                }
-//        );
-//    }
-
-    private <T> T wrap(String name, Callable<T> c) throws Exception {
-        if (GlobalTracer.isRegistered()) {
-            Tracer tracer = GlobalTracer.get();
-            Span serverSpan = tracer.activeSpan();
-
-            Span span = tracer.buildSpan(name)
-                    .asChildOf(serverSpan.context())
-                    .start();
-
-            try {
-                return c.call();
-            } catch (Exception e) {
-                span.log(e.toString());
-                throw e;
-            } finally {
-                // Optionally finish the Span if the operation it represents
-                // is logically completed at this point.
-                span.finish();
-            }
-        } else {
-            return c.call();
-        }
+    public void prepareOrder(PrepareOrderRequest request) throws Exception {
+        wrap("prepare-order", () -> {
+            kitchen.queue(request);
+        });
     }
 
 

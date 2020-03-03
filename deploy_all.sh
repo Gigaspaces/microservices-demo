@@ -24,15 +24,20 @@ function deployjar {
 }
 
 
-export GS_DIR="/home/yael/installations/xap/latest"
+if [[ -z "${GS_DIR}" ]]; then
+    export GS_DIR="/home/yael/installations/xap/latest"
+fi
 
 
 waitformanager
 
 #deploy delivery-service
+
 deployjar kitchen-space
 deploywar kitchen-service
+
 deployjar orders-space
 deploywar orders-service
-#deploywar gateway-api
+
+deploywar gateway-api
 
