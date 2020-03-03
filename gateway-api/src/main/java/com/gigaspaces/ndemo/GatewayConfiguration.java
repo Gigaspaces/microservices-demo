@@ -17,7 +17,7 @@ public class GatewayConfiguration {
 
     @Bean
     public ZipkinTracerBean tracerBean() {
-        return new ZipkinTracerBean();
+        return new ZipkinTracerBean("GatewayService");
     }
 
     @Bean

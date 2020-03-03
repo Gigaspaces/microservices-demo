@@ -19,7 +19,7 @@ public class OrdersConfiguration {
 
     @Bean
     public ZipkinTracerBean tracerBean() {
-        return new ZipkinTracerBean();
+        return new ZipkinTracerBean("OrdersService");
     }
 
     @Bean
@@ -38,5 +38,6 @@ public class OrdersConfiguration {
     public Admin admin() {
         return new AdminFactory().create();
     }
+
 
 }

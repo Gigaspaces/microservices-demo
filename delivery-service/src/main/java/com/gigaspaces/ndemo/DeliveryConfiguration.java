@@ -19,7 +19,7 @@ public class DeliveryConfiguration {
 
     @Bean
     public ZipkinTracerBean tracerBean() {
-        return new ZipkinTracerBean();
+        return new ZipkinTracerBean("DeliveryService");
     }
 
     @Bean

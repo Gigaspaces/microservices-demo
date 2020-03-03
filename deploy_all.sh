@@ -31,7 +31,8 @@ fi
 
 waitformanager
 
-#deploy delivery-service
+deployjar delivery-space
+deploywar delivery-service
 
 deployjar kitchen-space
 deploywar kitchen-service
@@ -40,4 +41,3 @@ deployjar orders-space
 deploywar orders-service
 
 deploywar gateway-api
-
