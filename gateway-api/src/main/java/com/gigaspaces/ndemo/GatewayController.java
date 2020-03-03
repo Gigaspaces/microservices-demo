@@ -1,5 +1,8 @@
 package com.gigaspaces.ndemo;
 
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.kv.model.GetValue;
 import com.gigaspaces.order.model.OrderStatusMsg;
 import com.gigaspaces.order.model.PlaceOrderRequest;
 import io.opentracing.Scope;
@@ -20,6 +23,8 @@ public class GatewayController {
     @Autowired
     private ServicesDiscovery servicesDiscovery;
 
+    private String openTracingKey = "gigaspaces/tracing";
+
 
     @GetMapping("/kitchen/menus")
     public GetMenusResponse getMenus(@RequestParam(defaultValue = "") String region) throws Exception {
@@ -39,6 +44,26 @@ public class GatewayController {
         return wrap("gateway-get-status", () ->
                 restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
         );
+    }
+
+    @PostMapping("/zipkin/active")
+    public boolean setZipkinActiveMode(@RequestParam(name = "active") boolean requestedMode) throws Exception {
+        return wrap("gateway-zipkin-set-active", () -> {
+            ConsulClient client = new ConsulClient("localhost");
+            Response<GetValue> kvValue = client.getKVValue(openTracingKey);
+            if (kvValue.getValue() == null) {
+                client.setKVValue(openTracingKey, String.valueOf(requestedMode));
+                return true;
+            } else {
+                boolean currentMode = Boolean.parseBoolean(kvValue.getValue().getDecodedValue());
+                if (requestedMode != currentMode) {
+                    client.setKVValue(openTracingKey, String.valueOf(requestedMode));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
 

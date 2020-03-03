@@ -34,7 +34,11 @@
             <artifactId>delivery-service-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.ecwid.consul</groupId>
+            <artifactId>consul-api</artifactId>
+            <version>1.4.4</version>
+        </dependency>
     </dependencies>
 
 
