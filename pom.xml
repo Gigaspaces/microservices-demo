@@ -8,12 +8,13 @@
         <module>gateway-api</module>
         <module>orders-space</module>
         <module>orders-service</module>
-        <module>delivery-service</module>
         <module>kitchen-service-api</module>
         <module>kitchen-service</module>
         <module>kitchen-space</module>
         <module>order-service-api</module>
+        <module>delivery-service</module>
         <module>delivery-service-api</module>
+        <module>delivery-space</module>
     </modules>
 
     <groupId>com.gigaspaces.microservices.demo</groupId>

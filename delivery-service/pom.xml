@@ -17,6 +17,17 @@
             <artifactId>delivery-service-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.gigaspaces.microservices.demo</groupId>
+            <artifactId>order-service-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gigaspaces</groupId>
+            <artifactId>xap-admin</artifactId>
+            <version>${gs.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

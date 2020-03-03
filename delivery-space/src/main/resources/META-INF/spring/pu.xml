@@ -10,4 +10,7 @@
     -->
     <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
+    <os-core:embedded-space id="space" space-name="delivery-space" />
+    <os-core:giga-space id="gigaSpace" space="space"/>
+
 </beans>

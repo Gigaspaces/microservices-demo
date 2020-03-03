@@ -28,13 +28,13 @@ public class GatewayController {
         );
     }
 
-    @PostMapping("orders/order/place")
+    @PostMapping("/orders/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("gateway-place-order", () ->
                 restTemplate.postForObject(servicesDiscovery.getOrdersServiceUrl() + "/order/place", placeOrderRequest, OrderStatusMsg.class));
     }
 
-    @GetMapping("orders/order/status")
+    @GetMapping("/orders/order/status")
     public OrderStatusMsg getOrderStatus(@RequestParam(defaultValue = "") String orderId) throws Exception {
         return wrap("gateway-get-status", () ->
                 restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
