@@ -9,6 +9,7 @@ import io.opentracing.util.GlobalTracer;
 import org.openspaces.core.GigaSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,11 +56,15 @@ public class KitchenController {
         });
     }
 
-//
-//    //prepareOrder
-//    @PostMapping("/order/prepare")
-//    public Prepare
-//
+
+    //prepareOrder
+    @PostMapping("/order/prepare")
+    public void prepareOrder(PrepareOrderRequest request){
+        //TODO
+    }
+
+
+
 
 
 //    @GetMapping("/restaurant")
