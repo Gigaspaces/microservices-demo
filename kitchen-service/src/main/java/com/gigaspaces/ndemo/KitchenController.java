@@ -66,6 +66,7 @@ public class KitchenController {
     public void prepareOrder(PrepareOrderRequest request) throws Exception {
         wrap("prepare-order", () -> {
             kitchen.queue(request);
+            return null;
         });
     }
 
