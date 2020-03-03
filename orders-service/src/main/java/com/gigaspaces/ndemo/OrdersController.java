@@ -33,6 +33,9 @@ public class OrdersController {
     @Autowired
     private ServicesDiscovery servicesDiscovery;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @PostMapping("/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("orders-service : place-order", () -> {
@@ -55,12 +58,11 @@ public class OrdersController {
     private void sendToKitchen(@RequestBody PlaceOrderRequest placeOrderRequest, String uid) {
         String kitchenServiceUrl = servicesDiscovery.getKitchenServiceUrl();
 
-        RestTemplate restTemplate = new RestTemplate();
         PrepareOrderRequest prepareOrderRequest = new PrepareOrderRequest();
         prepareOrderRequest.setOrderId(uid);
         prepareOrderRequest.setRestaurantId(placeOrderRequest.getRestaurantId());
         prepareOrderRequest.setMenuItems(placeOrderRequest.getMenuItemsIds());
-        String prepareOrderReply = restTemplate.postForObject(kitchenServiceUrl + "/order/prepare", prepareOrderRequest, String.class);
+        restTemplate.postForObject(kitchenServiceUrl + "/order/prepare", prepareOrderRequest, String.class);
     }
 
 
