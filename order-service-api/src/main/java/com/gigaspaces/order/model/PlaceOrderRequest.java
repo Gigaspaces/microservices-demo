@@ -4,18 +4,18 @@ import java.util.List;
 
 public class PlaceOrderRequest {
 
-    private String resturantId;
+    private String restaurantId;
     private List<String> menuItemsIds;
 
     public PlaceOrderRequest() {
     }
 
-    public String getResturantId() {
-        return resturantId;
+    public String getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setResturantId(String resturantId) {
-        this.resturantId = resturantId;
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public List<String> getMenuItemsIds() {

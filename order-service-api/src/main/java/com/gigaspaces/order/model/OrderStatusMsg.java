@@ -1,11 +1,17 @@
 package com.gigaspaces.order.model;
 
-public class OrderStatus {
+public class OrderStatusMsg {
 
     private String orderId;
     private Status status;
 
-    public OrderStatus() {
+
+    public OrderStatusMsg() {
+    }
+
+    public OrderStatusMsg(String orderId, Status status) {
+        this.orderId = orderId;
+        this.status = status;
     }
 
     public String getOrderId() {

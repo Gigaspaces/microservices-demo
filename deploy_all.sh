@@ -23,11 +23,16 @@ function deployjar {
     ${GS_DIR}/bin/gs.sh pu deploy $1 $1/target/$1.jar
 }
 
+
+export GS_DIR="/home/yael/installations/xap/latest"
+
+
 waitformanager
 
 #deploy delivery-service
 deployjar kitchen-space
 deploywar kitchen-service
-#deploy orders-service
-deploywar gateway-api
+deployjar orders-space
+deploywar orders-service
+#deploywar gateway-api
 
