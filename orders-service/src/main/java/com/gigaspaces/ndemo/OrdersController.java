@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.ws.rs.QueryParam;
 import java.util.concurrent.Callable;
 
 import static com.gigaspaces.ndemo.model.OrderStatus.PENDING_PREPARATION;

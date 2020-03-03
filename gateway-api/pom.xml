@@ -24,6 +24,17 @@
             <artifactId>kitchen-service-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.gigaspaces.microservices.demo</groupId>
+            <artifactId>order-service-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gigaspaces.microservices.demo</groupId>
+            <artifactId>delivery-service-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 

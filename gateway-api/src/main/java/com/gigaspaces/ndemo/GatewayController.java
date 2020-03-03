@@ -1,12 +1,12 @@
 package com.gigaspaces.ndemo;
 
+import com.gigaspaces.order.model.OrderStatusMsg;
+import com.gigaspaces.order.model.PlaceOrderRequest;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
@@ -25,6 +25,19 @@ public class GatewayController {
     public GetMenusResponse getMenus(@RequestParam(defaultValue = "") String region) throws Exception {
         return wrap("gateway-get-menus", () ->
                 restTemplate.getForEntity(servicesDiscovery.getKitchenServiceUrl() + "/menus?region=" + region, GetMenusResponse.class).getBody()
+        );
+    }
+
+    @PostMapping("orders/order/place")
+    public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
+        return wrap("gateway-place-order", () ->
+                restTemplate.postForObject(servicesDiscovery.getOrdersServiceUrl() + "/order/place", placeOrderRequest, OrderStatusMsg.class));
+    }
+
+    @GetMapping("orders/order/status")
+    public OrderStatusMsg getOrderStatus(@RequestParam(defaultValue = "") String orderId) throws Exception {
+        return wrap("gateway-get-status", () ->
+                restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
         );
     }
 
