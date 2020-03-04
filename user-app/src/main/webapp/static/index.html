@@ -1,0 +1,88 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+
+<h1 style="padding-left: 20px">Food Delivery</h1>
+
+<div class="col-md-4" style="padding-top:20px;">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Make Order</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Restaurant</label>
+                    <div class="col-sm-9">
+                        <select class="form-control restaurants">
+                            <option value="" disabled selected>Select a restaurant</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Menu items</label>
+                    <div class="col-sm-9">
+                        <select multiple size=10 class="form-control menuitems">
+                            <option value="" disabled selected>Select from menu</option>
+                        </select>
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="button" class="btn btn-default" onclick="makeOrder(this);">Make Order</button>
+                    </div>
+                </div>
+
+                <div class="result">
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8" style="padding-top:20px;">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Watched Orders</h3>
+        </div>
+        <div class="panel-body ">
+            <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Status</th>
+      <th scope="col">Restaurant</th>
+    </tr>
+  </thead>
+  <tbody class="watched-orders">
+<!--     <tr class="order-1">
+      <th scope="row">1</th>
+      <td>Mark</td>
+    </tr>
+    <tr class="order-2">
+      <th scope="row">2</th>
+      <td>Jacob</td>
+    </tr>
+    <tr class="order-3">
+      <th scope="row">3</th>
+      <td>Larry</td>
+    </tr> -->
+  </tbody>
+</table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

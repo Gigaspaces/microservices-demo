@@ -41,3 +41,5 @@ deployjar orders-space
 deploywar orders-service
 
 deploywar gateway-api
+
+deploywar user-app

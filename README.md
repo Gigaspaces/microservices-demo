@@ -4,6 +4,7 @@
 # Delivery Service (8181)
 # Kitchen Service (8182)
 # Orders Service (8183)
+# User App (8184)
 
 
 # Run Zipkin on docker container
