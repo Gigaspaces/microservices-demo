@@ -87,7 +87,7 @@ public class DeliveryPreLoader {
             while (true) {
 
                 try {
-                    Delivery delivery = gigaSpace.read(template, 10000);
+                    Delivery delivery = gigaSpace.read(template, Long.MAX_VALUE);
                     if (delivery != null) {
                         String orderId = delivery.getOrderId();
                         Span orderSpan = tracingSpanMap.get(orderId);
