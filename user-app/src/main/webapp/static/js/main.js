@@ -144,7 +144,7 @@ $(document).ready(function() {
                 // $(query+" td")[0].innerText = status.status;
                 var tr=document.getElementsByClassName("order-"+orderId)[0];
                 tr.querySelector("td").innerText=status.status;
-                if (status.status == "PENDING_DELIVERY") {
+                if (status.status == "DELIVERY_DONE") {
                     delete watchedOrders[orderId];                    
                 }    
             });

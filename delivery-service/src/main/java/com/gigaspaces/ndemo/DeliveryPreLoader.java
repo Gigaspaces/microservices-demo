@@ -7,6 +7,7 @@ import com.gigaspaces.ndemo.model.TracingSpanMap;
 import com.gigaspaces.order.model.OrderStatusMsg;
 import com.gigaspaces.order.model.Status;
 import com.gigaspaces.order.model.UpdateOrderRequest;
+import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -82,49 +84,64 @@ public class DeliveryPreLoader {
             Delivery template = new Delivery();
             template.setTaken(false);
             template.setRegion(region);
-            try {
-                while (true) {
+            while (true) {
+
+                try {
                     Delivery delivery = gigaSpace.read(template, 10000);
                     if (delivery != null) {
                         String orderId = delivery.getOrderId();
-                        logger.severe("%%%%%% GlobalTracer.isRegistered() = "+GlobalTracer.isRegistered()+" %%%%%%%");
-                        if (GlobalTracer.isRegistered()) {
-                            Span span = activateSpan(orderId);
-                            try {
-                                deliverOrder(delivery, orderId);
-                            } finally {
-                                span.finish();
-                            }
-                        } else {
-                            deliverOrder(delivery, orderId);
-                        }
+                        Span orderSpan = tracingSpanMap.get(orderId);
+                        wrap("deliver-order-" + orderId + "-job", orderSpan, () -> deliverOrder(delivery, orderId));
+                        orderSpan.finish();
+
                     }
+                } catch (Throwable t) {
+                    logger.log(Level.SEVERE, "%%%%%%%%% THROWABLE %%%%%%%%", t);
                 }
-            } catch (InterruptedException ignored) {
-                logger.severe("%%%%%%%%% INTERRUPTED %%%%%%%%");
-            } catch (Throwable t){
-                logger.log(Level.SEVERE, "%%%%%%%%% THROWABLE %%%%%%%%", t);
             }
         }
 
-        private void deliverOrder(Delivery delivery, String orderId) throws InterruptedException {
+        private void deliverOrder(Delivery delivery, String orderId) {
             gigaSpace.change(delivery, new ChangeSet().set("taken", true).set("courierId", courierId));
             gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", true));
             String ordersServiceUrl = servicesDiscovery.getOrdersServiceUrl();
             UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERING);
             OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
-            Thread.sleep(20000);
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            }
+
             gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", false));
             updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERY_DONE);
-            reply = restTemplate.postForObject(ordersServiceUrl + "/order/status", updateOrderRequest, OrderStatusMsg.class);
+            restTemplate.postForObject(ordersServiceUrl + "/order/status", updateOrderRequest, OrderStatusMsg.class);
         }
 
-        private Span activateSpan(String orderId) {
-            Span activeSpan = tracingSpanMap.get(orderId);
-            Tracer tracer = GlobalTracer.get();
-            tracer.scopeManager().activate(activeSpan);
-            return tracer.buildSpan("deliver-order-" + orderId + "-job")
-                    .asChildOf(activeSpan.context()).start();
+
+        public static void wrap(String name, Span activeSpan, Runnable r) {
+            if (GlobalTracer.isRegistered()) {
+                Tracer tracer = GlobalTracer.get();
+                try (Scope spanContext = tracer.scopeManager().activate(activeSpan)) {
+
+                    Span span = tracer.buildSpan(name)
+                            .asChildOf(activeSpan.context())
+                            .start();
+
+                    try {
+                        r.run();
+                    } catch (Exception e) {
+                        span.log(e.toString());
+                        throw e;
+                    } finally {
+                        // Optionally finish the Span if the operation it represents
+                        // is logically completed at this point.
+                        span.finish();
+                    }
+                }
+            } else {
+                r.run();
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.gigaspaces.ndemo.model;
 
 import io.opentracing.Span;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class TracingSpanMap {
 
     private final ConcurrentHashMap<String, Span> map = new ConcurrentHashMap<>();

@@ -40,9 +40,4 @@ public class DeliveryConfiguration {
         return restTemplate;
     }
 
-    @Bean
-    public TracingSpanMap tracingSpanMap() {
-        return new TracingSpanMap();
-    }
-
 }

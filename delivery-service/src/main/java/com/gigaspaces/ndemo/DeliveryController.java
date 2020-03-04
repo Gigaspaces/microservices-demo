@@ -45,14 +45,16 @@ public class DeliveryController {
             delivery.setOrderId(deliverOrderRequest.getOrderId());
             delivery.setRegion(deliverOrderRequest.getRegion());
             delivery.setTaken(false);
-            gigaSpace.write(delivery);
+
+            tracingSpanMap.put(deliverOrderRequest.getOrderId(), GlobalTracer.get().activeSpan());
+
 
             String ordersServiceUrl = servicesDiscovery.getOrdersServiceUrl();
 
             UpdateOrderRequest request = new UpdateOrderRequest(deliverOrderRequest.getOrderId(), Status.PENDING_DELIVERY);
-            OrderStatusMsg orderStatusMsg = restTemplate.postForEntity(ordersServiceUrl + "/order/status", request, OrderStatusMsg.class).getBody();
+            restTemplate.postForEntity(ordersServiceUrl + "/order/status", request, OrderStatusMsg.class).getBody();
 
-            tracingSpanMap.put(deliverOrderRequest.getOrderId(), GlobalTracer.get().activeSpan());
+            gigaSpace.write(delivery);
 
             return null;
         });

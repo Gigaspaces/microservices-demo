@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class GatewayController {
 
