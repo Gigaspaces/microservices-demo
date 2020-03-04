@@ -8,15 +8,13 @@ import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.openspaces.core.GigaSpace;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.gigaspaces.ndemo.TracingUtils.wrap;
@@ -29,6 +27,8 @@ public class KitchenController {
 
     @Autowired
     private Kitchen kitchen;
+
+    private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
 
     //getMenus
     @GetMapping("/menus")
@@ -63,7 +63,8 @@ public class KitchenController {
 
 
     @PostMapping("/order/prepare")
-    public void prepareOrder(PrepareOrderRequest request) throws Exception {
+    public void prepareOrder(@RequestBody PrepareOrderRequest request) throws Exception {
+        logger.severe("%%%%%%%%% prepare requested orderId = "+request.getOrderId()+" %%%%%%%%%");
         wrap("prepare-order", () -> {
             kitchen.queue(request);
             return null;

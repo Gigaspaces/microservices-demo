@@ -36,7 +36,7 @@ public class GatewayController {
     @PostMapping("/orders/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("gateway-place-order", () ->
-                restTemplate.postForObject(servicesDiscovery.getOrdersServiceUrl() + "/order/place", placeOrderRequest, OrderStatusMsg.class));
+                restTemplate.postForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/place", placeOrderRequest, OrderStatusMsg.class).getBody());
     }
 
     @GetMapping("/orders/order/status")

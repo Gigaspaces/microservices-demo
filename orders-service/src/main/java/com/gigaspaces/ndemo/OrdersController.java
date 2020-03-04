@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 import static com.gigaspaces.ndemo.model.OrderStatus.PENDING_PREPARATION;
 
@@ -36,6 +37,8 @@ public class OrdersController {
     @Autowired
     private RestTemplate restTemplate;
 
+    private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
+
     @PostMapping("/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("orders-service : place-order", () -> {
@@ -45,6 +48,7 @@ public class OrdersController {
             ticket.setStatus(PENDING_PREPARATION);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
             String uid = context.getUID();
+            logger.severe("%%%%%%%%%%%% Order id is "+uid+" %%%%%%%%%%%%");
             OrderStatusMsg response = new OrderStatusMsg();
             response.setOrderId(uid);
             response.setStatus(Status.PENDING_PREPARATION);
@@ -62,7 +66,7 @@ public class OrdersController {
         prepareOrderRequest.setOrderId(uid);
         prepareOrderRequest.setRestaurantId(placeOrderRequest.getRestaurantId());
         prepareOrderRequest.setMenuItems(placeOrderRequest.getMenuItemsIds());
-        restTemplate.postForObject(kitchenServiceUrl + "/order/prepare", prepareOrderRequest, String.class);
+        restTemplate.postForEntity(kitchenServiceUrl + "/order/prepare", prepareOrderRequest, String.class);
     }
 
 

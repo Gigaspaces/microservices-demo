@@ -1,5 +1,6 @@
 package com.gigaspaces.ndemo;
 
+import com.gigaspaces.ndemo.model.TracingSpanMap;
 import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
 import org.openspaces.admin.Admin;
@@ -37,6 +38,11 @@ public class DeliveryConfiguration {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new TracingRestTemplateInterceptor()));
         return restTemplate;
+    }
+
+    @Bean
+    public TracingSpanMap tracingSpanMap() {
+        return new TracingSpanMap();
     }
 
 }

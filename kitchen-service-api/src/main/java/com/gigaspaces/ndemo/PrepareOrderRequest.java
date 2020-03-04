@@ -1,8 +1,9 @@
 package com.gigaspaces.ndemo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PrepareOrderRequest {
+public class PrepareOrderRequest implements Serializable {
     private String orderId;
     private String restaurantId;
     private List<String> menuItems;
