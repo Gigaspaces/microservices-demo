@@ -6,6 +6,13 @@
     <!--
         Spring property configurer which allows us to use system properties (such as user.name).
     -->
-    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <props>
+                <prop key="web.port">${NOMAD_PORT__SERVICE_PORT}</prop>
+                <prop key="web.context">/delivery</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>
