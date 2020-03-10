@@ -21,6 +21,7 @@ import javax.annotation.PreDestroy;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,13 +88,14 @@ public class DeliveryPreLoader {
             while (true) {
 
                 try {
-                    Delivery delivery = gigaSpace.read(template, Long.MAX_VALUE);
+                    Delivery delivery = gigaSpace.read(template);
                     if (delivery != null) {
                         String orderId = delivery.getOrderId();
                         Span orderSpan = tracingSpanMap.get(orderId);
                         wrap("deliver-order-" + orderId + "-job", orderSpan, () -> deliverOrder(delivery, orderId));
                         orderSpan.finish();
-
+                    } else  {
+                        TimeUnit.SECONDS.sleep(5);
                     }
                 } catch (Throwable t) {
                     logger.log(Level.SEVERE, "%%%%%%%%% THROWABLE %%%%%%%%", t);
