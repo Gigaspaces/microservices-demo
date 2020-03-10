@@ -1,6 +1,5 @@
 package com.gigaspaces.ndemo;
 
-import com.gigaspaces.ndemo.model.TracingSpanMap;
 import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
 import org.openspaces.admin.Admin;
