@@ -10,11 +10,6 @@ import org.springframework.web.client.RestTemplate;
 public class DemoAppConfiguration {
 
     @Bean
-    public Admin admin() {
-        return new AdminFactory().create();
-    }
-
-    @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

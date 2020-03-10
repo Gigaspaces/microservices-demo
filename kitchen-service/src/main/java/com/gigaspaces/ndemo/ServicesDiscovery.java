@@ -1,34 +1,30 @@
 package com.gigaspaces.ndemo;
 
-import org.openspaces.admin.Admin;
-import org.openspaces.admin.pu.ProcessingUnit;
-import org.openspaces.pu.container.jee.JeeServiceDetails;
+import com.gigaspaces.ndemo.model.ServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 
 @Component
 public class ServicesDiscovery {
 
+    private static final String servicesUrl = "http://localhost:8500/v1/catalog/service/";
+
     @Autowired
-    Admin admin;
-
-
-    private String prepareUrl(JeeServiceDetails jeeDetails) {
-        return "http://" + jeeDetails.getHost() + ":" + jeeDetails.getPort() + "" + jeeDetails.getContextPath();
-    }
+    private RestTemplate restTemplate;
 
     public String getUrlFor(String serviceName) {
-        ProcessingUnit pu = admin.getProcessingUnits().waitFor(serviceName);
-        pu.waitFor(pu.getPlannedNumberOfInstances());
-        return prepareUrl(pu.getInstances()[0].getJeeDetails());
+        ResponseEntity<ServiceDetails[]> response = this.restTemplate.getForEntity(servicesUrl + serviceName, ServiceDetails[].class);
+        if (response.getBody() != null && response.getBody().length != 0) {
+            ServiceDetails details = response.getBody()[0];
+            return details.getServiceAddress() + ":" + details.getServicePort();
+        }
+        throw new IllegalArgumentException("Cannot find service " + serviceName);
     }
 
-    public String getKitchenServiceUrl() {
-        return getUrlFor("kitchen-service");
-    }
-
-    public String getOrdersServiceUrl() {
+    String getOrdersServiceUrl() {
         return getUrlFor("orders-service");
 
     }

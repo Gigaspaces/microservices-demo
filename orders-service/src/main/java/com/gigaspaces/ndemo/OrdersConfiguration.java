@@ -33,11 +33,4 @@ public class OrdersConfiguration {
         restTemplate.setInterceptors(Collections.<ClientHttpRequestInterceptor>singletonList(new TracingRestTemplateInterceptor()));
         return restTemplate;
     }
-
-    @Bean
-    public Admin admin() {
-        return new AdminFactory().create();
-    }
-
-
 }
