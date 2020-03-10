@@ -1,5 +1,5 @@
-var baseUrl = "http://172.31.13.69:8180/"
-// var baseUrl = ""
+//var baseUrl = "http://localhost:8180/" // For local/dev mode
+var baseUrl = ""
 var watchedOrders = {};
 
 function clearSelect(select, keep) {

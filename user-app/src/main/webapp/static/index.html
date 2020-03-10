@@ -5,6 +5,7 @@
 
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/main.js"></script>
+    <title>Food Delivery</title>
 </head>
 <body>
 
@@ -19,16 +20,16 @@
         <div class="panel-body">
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Restaurant</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Restaurant</label>
+                    <div class="col-sm-10">
                         <select class="form-control restaurants">
                             <option value="" disabled selected>Select a restaurant</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Menu items</label>
-                    <div class="col-sm-9">
+                    <label class="col-sm-2 control-label">Menu items</label>
+                    <div class="col-sm-10">
                         <select multiple size=10 class="form-control menuitems">
                             <option value="" disabled selected>Select from menu</option>
                         </select>
@@ -36,14 +37,14 @@
                 </div>
                
                 <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
+                    <div class="col-sm-offset-2 col-sm-2">
                         <button type="button" class="btn btn-default" onclick="makeOrder(this);">Make Order</button>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="result" style="padding-top: 8px;"></div>
                     </div>
                 </div>
 
-                <div class="result">
-
-                </div>
             </form>
 
         </div>
@@ -66,18 +67,7 @@
     </tr>
   </thead>
   <tbody class="watched-orders">
-<!--     <tr class="order-1">
-      <th scope="row">1</th>
-      <td>Mark</td>
-    </tr>
-    <tr class="order-2">
-      <th scope="row">2</th>
-      <td>Jacob</td>
-    </tr>
-    <tr class="order-3">
-      <th scope="row">3</th>
-      <td>Larry</td>
-    </tr> -->
+
   </tbody>
 </table>
         </div>
