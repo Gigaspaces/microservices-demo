@@ -5,6 +5,7 @@ import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
 import com.gigaspaces.order.model.OrderStatusMsg;
 import com.gigaspaces.order.model.PlaceOrderRequest;
+import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
@@ -24,7 +25,7 @@ public class GatewayController {
     @Autowired
     private ServicesDiscovery servicesDiscovery;
 
-    private String openTracingKey = "gigaspaces/tracing";
+    private String openTracingKey = ZipkinTracerBean.CONSUL_KEY;
 
 
     @GetMapping("/kitchen/menus")
