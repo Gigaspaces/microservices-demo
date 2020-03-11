@@ -40,7 +40,7 @@ public class DeliveryController {
     public void deliverOrder(@RequestBody DeliverOrderRequest deliverOrderRequest) throws Exception {
         wrap("delivery-service : delivery", () -> {
 
-            logger.severe("%%%%%%%%% deliver request order id = "+deliverOrderRequest+" %%%%%%%%%");
+            logger.severe("%%%%%%%%% deliver request order id = "+deliverOrderRequest.getOrderId()+" %%%%%%%%%");
             Delivery delivery = new Delivery();
             delivery.setOrderId(deliverOrderRequest.getOrderId());
             delivery.setRegion(deliverOrderRequest.getRegion());

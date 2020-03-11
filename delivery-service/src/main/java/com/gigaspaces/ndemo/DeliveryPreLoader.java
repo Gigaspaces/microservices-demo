@@ -117,7 +117,7 @@ public class DeliveryPreLoader {
 
             gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", false));
             updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERY_DONE);
-            restTemplate.postForObject(ordersServiceUrl + "/order/status", updateOrderRequest, OrderStatusMsg.class);
+            restTemplate.postForObject(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class);
         }
 
 
