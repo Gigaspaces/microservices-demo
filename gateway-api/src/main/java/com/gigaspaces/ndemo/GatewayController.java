@@ -35,7 +35,7 @@ public class GatewayController {
     public GetMenusResponse getMenus(@RequestParam(defaultValue = "") String region) throws Exception {
         return wrap("gateway-get-menus", () ->
                 {
-                    String url = servicesDiscovery.getKitchenServiceUrl() + "/menus?region=" + region;
+                    String url = servicesDiscovery.getKitchenServiceUrl() + "/kitchen/menus?region=" + region;
                     logger.info("trying to get "+url);
                     return restTemplate.getForEntity(url, GetMenusResponse.class).getBody();
                 }
@@ -45,13 +45,13 @@ public class GatewayController {
     @PostMapping("/orders/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("gateway-place-order", () ->
-                restTemplate.postForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/place", placeOrderRequest, OrderStatusMsg.class).getBody());
+                restTemplate.postForEntity(servicesDiscovery.getOrdersServiceUrl() + "/orders/order/place", placeOrderRequest, OrderStatusMsg.class).getBody());
     }
 
     @GetMapping("/orders/order/status")
     public OrderStatusMsg getOrderStatus(@RequestParam(defaultValue = "") String orderId) throws Exception {
         return wrap("gateway-get-status", () ->
-                restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
+                restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "orders/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
         );
     }
 
