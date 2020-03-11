@@ -51,7 +51,7 @@ public class GatewayController {
     @GetMapping("/orders/order/status")
     public OrderStatusMsg getOrderStatus(@RequestParam(defaultValue = "") String orderId) throws Exception {
         return wrap("gateway-get-status", () ->
-                restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "orders/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
+                restTemplate.getForEntity(servicesDiscovery.getOrdersServiceUrl() + "/orders/order/status?orderId=" + orderId, OrderStatusMsg.class).getBody()
         );
     }
 
