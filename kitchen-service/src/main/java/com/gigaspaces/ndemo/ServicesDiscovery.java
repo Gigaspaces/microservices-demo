@@ -19,7 +19,7 @@ public class ServicesDiscovery {
         ResponseEntity<ServiceDetails[]> response = this.restTemplate.getForEntity(servicesUrl + serviceName, ServiceDetails[].class);
         if (response.getBody() != null && response.getBody().length != 0) {
             ServiceDetails details = response.getBody()[0];
-            return details.getServiceAddress() + ":" + details.getServicePort();
+            return "http://"+details.getServiceAddress() + ":" + details.getServicePort();
         }
         throw new IllegalArgumentException("Cannot find service " + serviceName);
     }

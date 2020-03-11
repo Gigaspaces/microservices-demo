@@ -1,11 +1,19 @@
 package com.gigaspaces.ndemo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ServiceDetails {
+    @JsonProperty("ID")
     private String ID;
+    @JsonProperty("Node")
     private String Node;
+    @JsonProperty("Address")
     private String Address;
+    @JsonProperty("Datacenter")
     private String Datacenter;
+    @JsonProperty("ServiceAddress")
     private String ServiceAddress;
+    @JsonProperty("ServicePort")
     private int ServicePort;
 
     public ServiceDetails() {
