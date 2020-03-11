@@ -9,6 +9,8 @@ import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -27,11 +29,16 @@ public class GatewayController {
 
     private String openTracingKey = ZipkinTracerBean.CONSUL_KEY;
 
+    private static Logger logger = LoggerFactory.getLogger("GATEWAY_CONTROLLER");
 
     @GetMapping("/kitchen/menus")
     public GetMenusResponse getMenus(@RequestParam(defaultValue = "") String region) throws Exception {
         return wrap("gateway-get-menus", () ->
-                restTemplate.getForEntity(servicesDiscovery.getKitchenServiceUrl() + "/menus?region=" + region, GetMenusResponse.class).getBody()
+                {
+                    String url = servicesDiscovery.getKitchenServiceUrl() + "/menus?region=" + region;
+                    logger.info("trying to get "+url);
+                    return restTemplate.getForEntity(url, GetMenusResponse.class).getBody();
+                }
         );
     }
 
