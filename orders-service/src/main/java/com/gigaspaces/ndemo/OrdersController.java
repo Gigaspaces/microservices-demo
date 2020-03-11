@@ -66,7 +66,7 @@ public class OrdersController {
         prepareOrderRequest.setOrderId(uid);
         prepareOrderRequest.setRestaurantId(placeOrderRequest.getRestaurantId());
         prepareOrderRequest.setMenuItems(placeOrderRequest.getMenuItemsIds());
-        restTemplate.postForEntity(kitchenServiceUrl + "/order/prepare", prepareOrderRequest, String.class);
+        restTemplate.postForEntity(kitchenServiceUrl + "/kitchen/order/prepare", prepareOrderRequest, String.class);
     }
 
 

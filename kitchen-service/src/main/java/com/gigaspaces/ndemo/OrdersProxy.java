@@ -20,7 +20,7 @@ public class OrdersProxy {
         request.setOrderId(orderId);
         request.setStatus(status);
 
-        restTemplate.postForEntity(servicesDiscovery.getOrdersServiceUrl() + "/order/status", request, String.class);
+        restTemplate.postForEntity(servicesDiscovery.getOrdersServiceUrl() + "/orders/order/status", request, String.class);
     }
 
 }

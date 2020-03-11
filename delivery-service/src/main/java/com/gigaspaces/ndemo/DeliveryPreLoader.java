@@ -108,7 +108,7 @@ public class DeliveryPreLoader {
             gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", true));
             String ordersServiceUrl = servicesDiscovery.getOrdersServiceUrl();
             UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERING);
-            OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
+            OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
             try {
                 Thread.sleep(20000);
             } catch (InterruptedException ignored) {

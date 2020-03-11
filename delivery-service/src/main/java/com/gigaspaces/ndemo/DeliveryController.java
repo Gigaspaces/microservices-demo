@@ -52,7 +52,7 @@ public class DeliveryController {
             String ordersServiceUrl = servicesDiscovery.getOrdersServiceUrl();
 
             UpdateOrderRequest request = new UpdateOrderRequest(deliverOrderRequest.getOrderId(), Status.PENDING_DELIVERY);
-            restTemplate.postForEntity(ordersServiceUrl + "/order/status", request, OrderStatusMsg.class).getBody();
+            restTemplate.postForEntity(ordersServiceUrl + "/orders/order/status", request, OrderStatusMsg.class).getBody();
 
             gigaSpace.write(delivery);
 

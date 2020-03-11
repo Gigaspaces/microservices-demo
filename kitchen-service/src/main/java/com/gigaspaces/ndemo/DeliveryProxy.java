@@ -22,7 +22,7 @@ public class DeliveryProxy {
         request.setOrderId(orderId);
         request.setRegion(region);
 
-        restTemplate.postForEntity(servicesDiscovery.getDeliveryServiceUrl() + "/deliver", request, String.class);
+        restTemplate.postForEntity(servicesDiscovery.getDeliveryServiceUrl() + "/delivery/deliver", request, String.class);
     }
 
 }
