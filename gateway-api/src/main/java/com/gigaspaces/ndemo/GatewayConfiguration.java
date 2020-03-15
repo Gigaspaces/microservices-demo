@@ -28,9 +28,4 @@ public class GatewayConfiguration {
     }
 
 
-    @Bean
-    public Admin admin() {
-        return new AdminFactory().create();
-    }
-
 }

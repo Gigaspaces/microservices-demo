@@ -12,12 +12,6 @@
     <artifactId>gateway-api</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.gigaspaces</groupId>
-            <artifactId>xap-admin</artifactId>
-            <version>${gs.version}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.gigaspaces.microservices.demo</groupId>
