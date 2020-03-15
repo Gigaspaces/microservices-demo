@@ -2,8 +2,6 @@ package com.gigaspaces.ndemo;
 
 import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.contrib.spring.web.client.TracingRestTemplateInterceptor;
-import org.openspaces.admin.Admin;
-import org.openspaces.admin.AdminFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
