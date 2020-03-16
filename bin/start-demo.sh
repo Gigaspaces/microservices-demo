@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 set -ex
-
-echo "Downloading gsctl.jar"
-
-wget https://github.com/Gigaspaces/gsctl/raw/master/gsctl.jar
-
-
-echo "Setting up cluster"
-java -jar gsctl.jar create
+#
+#echo "Downloading gsctl.jar"
+#
+#wget https://github.com/Gigaspaces/gsctl/raw/master/gsctl.jar
+#
+#
+#echo "Setting up cluster"
+#java -jar gsctl.jar create
 
 echo "Deploying services"
 for space in kitchen-space delivery-space orders-space; do
