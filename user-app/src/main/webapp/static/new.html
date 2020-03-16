@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/newmain.js"></script>
+    <title>Food Delivery - Order food online</title>
+</head>
+
+<body>
+    <div class="container-fluid header">
+        <div class="container">
+
+            <nav class="navbar navbar-center">
+                <div class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" onClick='moveToRestaurants()'>About us</a></li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Restaurants</a></li>
+                        <li>
+                            <div class="logo-container" style="cursor:pointer;" onClick='moveToRestaurants()'>
+                                <img src="images/logo.png" class="logo">
+                            </div>
+                        </li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Join uS</a></li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Contact us</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container-fluid promo" style="position:relative;">
+        <div>
+            <img src="images/promo.jpg" class="promo-image" />
+        </div>
+        <div class="promo-h1">
+            <h1>Hungry ?</h1>
+        </div>
+        <div class="promo-h2">
+            Our service offers a wide variety of healthy and delicious products. Scroll down to try us...
+        </div>
+    </div>
+    <div class="container">
+        <div class="breadcrumb-container" id="breadcrumb-container">
+
+        </div>
+    </div>
+    <div class="container-fluid">
+        &nbsp;
+        <!--spacer div-->
+    </div>
+    <div class="container">
+        <h1 id="header-title">Our Restaurants</h1>
+    </div>
+    <div class="container">
+        <div style="text-align:left;" id="cards-container" class="row">
+        </div>
+        <div class="row">
+            <button class="btn btn-block make-order" onClick="makeOrder()" id="make-order">Make an order</button>
+        </div>
+    </div>
+    <div class="container-fluid footer">
+        All rights reserved &copy; FOOD delivery 2020
+    </div>
+    <div class="floating-div">
+        <div class="panel panel-default">
+            <div class="panel-heading watching-title" style="cursor:pointer;" onClick="toggleWatching();">
+                Order History<div style="position:absolute;top:10px;right:15px;cursor:pointer;font-weight:bold;">-</div>
+            </div>
+            <div class="panel-body " id="watch-body">
+                <table class="table inner-panel-fonts">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Restaurant</th>
+                        </tr>
+                    </thead>
+                    <tbody class="watched-orders">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
