@@ -76,18 +76,18 @@ public class KitchenPreloader {
         gigaSpace.write(new MenuItem("Garlic bread", restaurant8.getId()));
         gigaSpace.write(new MenuItem("Soda", restaurant8.getId()));
 
-        Restaurant restaurant9 = new Restaurant("Curry Kitchen", "Up town");
-        gigaSpace.write(restaurant9);
-        gigaSpace.write(new MenuItem("Butter chicken", restaurant9.getId()));
-        gigaSpace.write(new MenuItem("Tandoori chicken", restaurant9.getId()));
-        gigaSpace.write(new MenuItem("Chicken tikka masala", restaurant9.getId()));
-        gigaSpace.write(new MenuItem("Malai kofta", restaurant9.getId()));
-
-        Restaurant restaurant10 = new Restaurant("Spoons Cafe", "Up town");
-        gigaSpace.write(restaurant10);
-        gigaSpace.write(new MenuItem("Omelette sandwich", restaurant10.getId()));
-        gigaSpace.write(new MenuItem("Tuna sandwich", restaurant10.getId()));
-        gigaSpace.write(new MenuItem("Bruschetta", restaurant10.getId()));
-        gigaSpace.write(new MenuItem("Camembert pastry", restaurant10.getId()));
+//        Restaurant restaurant9 = new Restaurant("Curry Kitchen", "Up town");
+//        gigaSpace.write(restaurant9);
+//        gigaSpace.write(new MenuItem("Butter chicken", restaurant9.getId()));
+//        gigaSpace.write(new MenuItem("Tandoori chicken", restaurant9.getId()));
+//        gigaSpace.write(new MenuItem("Chicken tikka masala", restaurant9.getId()));
+//        gigaSpace.write(new MenuItem("Malai kofta", restaurant9.getId()));
+//
+//        Restaurant restaurant10 = new Restaurant("Spoons Cafe", "Up town");
+//        gigaSpace.write(restaurant10);
+//        gigaSpace.write(new MenuItem("Omelette sandwich", restaurant10.getId()));
+//        gigaSpace.write(new MenuItem("Tuna sandwich", restaurant10.getId()));
+//        gigaSpace.write(new MenuItem("Bruschetta", restaurant10.getId()));
+//        gigaSpace.write(new MenuItem("Camembert pastry", restaurant10.getId()));
     }
 }
