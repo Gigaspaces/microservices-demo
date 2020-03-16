@@ -1,5 +1,5 @@
-var baseUrl = "http://localhost:8180/" // For local/dev mode
-//var baseUrl = ""
+//var baseUrl = "http://localhost:8180/" // For local/dev mode
+var baseUrl = ""
 var watchedOrders = {};
 
 let rests = []
