@@ -74,7 +74,7 @@ body {
 }
 
 .footer {
-    padding:100px;
+    padding:50px;
     background-color:rgba(0,0,0,0.8);
     color:#fff;
     margin-top:20px;
@@ -108,7 +108,7 @@ body {
       position:fixed;
       right:10px;
       bottom:25px;
-      width:400px;
+      width:600px;
   }
 
   .watching-title {
@@ -116,6 +116,7 @@ body {
       color:white !important;
       font-weight:bold !important;
       font-size:16px !important;
+      position: relative;
   }
 
   .panel {
@@ -130,3 +131,15 @@ body {
   .make-order {
       width:100%;
   }
+
+
+.message-box {
+    width: 600px;
+    background-color: #319688 !important;
+    color:white !important;
+    font-weight:bold !important;
+    font-size:16px !important;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}

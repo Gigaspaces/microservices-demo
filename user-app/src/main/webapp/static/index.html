@@ -1,78 +1,95 @@
 <html>
-<head>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
 
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/main.js"></script>
-    <title>Food Delivery</title>
+    <title>Food Delivery - Order food online</title>
 </head>
+
 <body>
+    <div class="container-fluid header">
+        <div class="container">
 
-<h1 style="padding-left: 20px">Food Delivery</h1>
-
-<div class="col-md-4" style="padding-top:20px;">
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Make Order</h3>
+            <nav class="navbar navbar-center">
+                <div class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" onClick='moveToRestaurants()'>About us</a></li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Restaurants</a></li>
+                        <li>
+                            <div class="logo-container" style="cursor:pointer;" onClick='moveToRestaurants()'>
+                                <img src="images/logo.png" class="logo">
+                            </div>
+                        </li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Join uS</a></li>
+                        <li><a href="#" onClick='moveToRestaurants()'>Contact us</a></li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div class="panel-body">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Restaurant</label>
-                    <div class="col-sm-10">
-                        <select class="form-control restaurants">
-                            <option value="" disabled selected>Select a restaurant</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Menu items</label>
-                    <div class="col-sm-10">
-                        <select multiple size=10 class="form-control menuitems">
-                            <option value="" disabled selected>Select from menu</option>
-                        </select>
-                    </div>
-                </div>
-               
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-2">
-                        <button type="button" class="btn btn-default" onclick="makeOrder(this);">Make Order</button>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="result" style="padding-top: 8px;"></div>
-                    </div>
-                </div>
-
-            </form>
+    </div>
+    <div class="container-fluid promo" style="position:relative;">
+        <div>
+            <img src="images/promo.jpg" class="promo-image" />
+        </div>
+        <div class="promo-h1">
+            <h1>Hungry ?</h1>
+        </div>
+        <div class="promo-h2">
+            Our service offers a wide variety of healthy and delicious products. Scroll down to try us...
+        </div>
+    </div>
+    <div class="container">
+        <div class="breadcrumb-container" id="breadcrumb-container">
 
         </div>
     </div>
-</div>
-
-<div class="col-md-8" style="padding-top:20px;">
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Watched Orders</h3>
+    <div class="container-fluid">
+        &nbsp;
+        <!--spacer div-->
+    </div>
+    <div class="container">
+        <h1 id="header-title">Our Restaurants</h1>
+    </div>
+    <div class="container">
+        <div style="text-align:left;" id="cards-container" class="row">
         </div>
-        <div class="panel-body ">
-            <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Status</th>
-      <th scope="col">Restaurant</th>
-    </tr>
-  </thead>
-  <tbody class="watched-orders">
-
-  </tbody>
-</table>
+        <div class="row">
+            <button class="btn btn-block make-order" onClick="makeOrder()" id="make-order">Make an order</button>
         </div>
     </div>
-</div>
+    <div class="container-fluid footer">
+        All rights reserved &copy; FOOD delivery 2020
+    </div>
+    <div class="floating-div">
+
+        <div id="message-box" class="message-box">
+
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading watching-title" style="cursor:pointer;" onClick="toggleWatching();">
+                Order History<div style="position:absolute;top:10px;right:15px;cursor:pointer;font-weight:bold;">-</div>
+            </div>
+            <div class="panel-body " id="watch-body">
+                <table class="table inner-panel-fonts">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Restaurant</th>
+                        </tr>
+                    </thead>
+                    <tbody class="watched-orders">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>
