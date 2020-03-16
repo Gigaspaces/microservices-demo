@@ -1,18 +1,116 @@
-//var baseUrl = "http://localhost:8180/" // For local/dev mode
-var baseUrl = ""
+var baseUrl = "http://localhost:8180/" // For local/dev mode
+//var baseUrl = ""
 var watchedOrders = {};
 
-function clearSelect(select, keep) {
-    while (select.length > keep) {
-        select.remove(select.length - 1);
+let rests = []
+let images = [...Array(10).keys()].map(id => "images/restaurants/"+id+".jpg");
+
+function getOrderStatus(orderId, callback) {
+    $.get(baseUrl +"orders/order/status?orderId="+orderId)
+        .done(res => callback(res));
+}
+$(document).ready(function () {
+    $.get( baseUrl + "kitchen/menus", function( data ) {
+      rests = data.resturantMenuList.map(restaurant => {
+        return {...restaurant, id: restaurant.restaurantId, name: restaurant.restaurantName};
+      });
+      rests = rests.sort(function(a, b) {
+        return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)
+      });
+      rests = rests.map((rest, index) => { return {...rest, img: images[index]}; } );
+      update(model);
+    });
+
+    toggleWatching(false);
+
+    setInterval(function () {
+            Object.keys(watchedOrders).forEach(function(orderId) {
+                getOrderStatus(orderId, status => {
+                    watchedOrders[orderId] = status.status;
+                    // var query = ".watched-orders .order-"+orderId;
+                    // $(query+" td")[0].innerText = status.status;
+                    var tr=document.getElementsByClassName("order-"+orderId)[0];
+                    tr.querySelector("td").innerText=status.status;
+                    if (status.status == "DELIVERY_DONE") {
+                        delete watchedOrders[orderId];
+                    }
+                });
+            });
+        }, 500);
+
+    $("#message-box").hide();
+
+});
+
+// Model
+const pages = {
+    RESTAURANTS: 'restaurants',
+    MENUS: 'menus'
+};
+
+let watchingState = true;
+
+const initModel =() => { return {
+    page: pages.RESTAURANTS,
+    selectedRestaurant: 0,
+    selectedMenu: [],
+    selectedMenuItems: []
+} };
+
+let model = initModel();
+
+//update
+
+const update = (model) => {
+    switch (model.page) {
+        case pages.RESTAURANTS:
+            $("#cards-container").html(getAllRestaurants(rests));
+            $("#header-title").text("Our Restaurants");
+            $("#breadcrumb-container").html("");
+            $("#make-order").hide();
+            return;
+        case pages.MENUS:
+            $("#cards-container").html(getAllMenuItemsByRestaurant(model));
+            $("#header-title").text(getRestById(rests, model.selectedRestaurant).name + " menu");
+            $("#breadcrumb-container").html("<span style='cursor:pointer' onClick='moveToRestaurants()'> Restaurants</span> > "+getRestById(rests, model.selectedRestaurant).name+" > Menu")
+            $("#make-order").show();
+            return;
+        default:
+            return;
     }
 }
 
+//utils
 
-function updateMenu(restaurantId, elem) {
-    var restaurant = resturantMenuList.filter(function (restaurant) { return restaurant.restaurantId == restaurantId; })[0];
-    clearSelect(elem, 0);
-    var array = [];
+// RESTAURANT UTILS //
+
+// getAllRestaurants : renders restaurants into html elements 
+// @restList : restaurants List 
+// #return   : a string which is the html of the restaurant container
+
+const getAllRestaurants = (restList) => {
+    const htmlElementsList = restList.map((restaurant) => {
+        return `
+    <div class="card" class="col-4" onClick="restaurantClicked('${restaurant.id}')" id="restaurant-${restaurant.id}">
+        <img src="${restaurant.img}" class="card-image">
+        <div class="card-body">
+            <h5 class="card-title">${restaurant.name}</h5>
+<!--            <p class="card-text">${restaurant.desc}</p> -->
+        </div>
+    </div>`;
+    });
+
+    return htmlElementsList.reduce((a, b) => a + b, "")
+}
+
+// restaurantClicked : a function which updates the dom
+// when restaurant card is clicked
+// @restaurantId : the restaurant id 
+//
+
+const restaurantClicked = (restaurantId) => {
+    let restaurant = getRestById(rests, restaurantId);
+    let array = [];
     for (var key in restaurant.menuItems) {
       array.push({
         id: key,
@@ -20,33 +118,109 @@ function updateMenu(restaurantId, elem) {
       });
     }
 
-    var sorted = array.sort(function(a, b) {
+    let sorted = array.sort(function(a, b) {
       return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)
     });
 
-    sorted.forEach(function (menuItem) {
-    //TODO use addOption
-        var option = document.createElement("option");
-        option.text = menuItem.name;
-        option.value = menuItem.id;
-        elem.add(option);
+    model = {
+        ...model,
+        page: pages.MENUS,
+        selectedRestaurant: restaurantId,
+        selectedMenu: sorted
+    }
+    update(model);
+    return;
+}
+
+// getRestById: gets restaurant by id from restaurants array
+// @param restArray : array of restaurants
+// @param restId    : id of restaurant
+// return an object which is the restaurant that was selected
+
+const getRestById = (restArray, restId) => {
+    return restArray.filter((rest) => rest.id == restId)[0];
+}
+
+const moveToRestaurants = () => {
+    model = initModel();
+    update(model);
+}
+// RESTAURANT UTILS //
+
+const getAllMenuItemsByRestaurant = (inputModel) => {
+    const htmlElementsList = inputModel.selectedMenu.map((item) => {
+        if (isSelected(model, item)) {
+            return `
+            <div class="card col-4" style="min-width:200px;min-height:200px;text-align:center;padding:10px;padding-top:80px; background-color:#e3e3e3;" onClick="removeMenuToOrderList('${item.id}')" id="item-${item.id}">
+                ${item.name}
+            </div>`;
+        } else {
+            return `
+            <div class="card col-4" style="min-width:200px;min-height:200px;text-align:center;padding:10px;padding-top:80px;" onClick="addMenuToOrderList('${item.id}')" id="item-${item.id}">
+                ${item.name}
+            </div>`;
+        }
+
     });
+
+    return htmlElementsList.reduce((a, b) => a + b, "")
 }
 
-function addOption(select, text, value) {
-     var option = document.createElement("option");
-     option.text = text;
-     if (value) {
-        option.value = value;
-     }
-     select.add(option);
+const isSelected = (inputModel, testedItem) => {
+    return inputModel.selectedMenuItems.filter((item) => item.id == testedItem.id).length > 0;
 }
 
+const addMenuToOrderList = (item) => {
+    model.selectedMenuItems.push(getItemById(model.selectedMenu,item))
+    model = {
+        ...model,
+        page: pages.MENUS,
+    }
+    update(model);
+}
+
+const removeMenuToOrderList = (itemId) => {
+    model = {
+        ...model,
+        selectedMenuItems:model.selectedMenuItems.filter((filteredItem) => {
+            console.log(filteredItem.id.toString() !== itemId.toString());
+            return filteredItem.id.toString() !== itemId.toString()
+            
+        })
+        
+    }
+    update(model);
+}
+
+const getItemById = (menuArray, itemId) => {
+    return (menuArray.filter((item) => item.id == itemId)[0]);
+}
+
+
+//watching toggling:
+
+const toggleWatching = (newWatchingState) => {
+    if (newWatchingState) {
+            $("#watch-body").show(500);
+            watchingState=true;
+            return;
+    }
+    switch(watchingState) {
+        case true:
+            $("#watch-body").hide(500);
+            watchingState=false;
+            return;
+        case false:
+            $("#watch-body").show(500);
+            watchingState=true;
+            return;
+    } 
+}
 function addWatchOrder(orderId, restaurantName, menuItems) {
     watchedOrders[orderId]="";
     var tr = $("<tr/>");
     tr.addClass("order-"+orderId);
-    
+
     var th = $("<th/>");
     th.text(orderId);
     th.attr("scope","row");
@@ -58,40 +232,15 @@ function addWatchOrder(orderId, restaurantName, menuItems) {
     var tdRestaurantName = $("<td/>");
     tdRestaurantName.text(restaurantName);
     tr.append(tdRestaurantName);
-    
+
     $(".watched-orders").append(tr);
 }
-
-function getOrderStatus(orderId, callback) {
-    $.get(baseUrl +"orders/order/status?orderId="+orderId)
-        .done(res => callback(res));
-}
-
-/// APIs
-function makeOrder(elem) {
-    var parent = $(elem).parents(".form-horizontal");
-    var selects = parent.find("select");
-    var result = parent.find(".result");
-    var selectedRestaurant = selects[0].value;
-    var selectedRestaurantName = selects[0].options[selects[0].selectedIndex].text;
-    if (!selectedRestaurant) {
-        alert("Please select a restaurant");
-        return;
-    }
-
-    var selectedMenuItems = selects[1].value;
-    if (!selectedMenuItems) {
-        alert("Please select menu items");
-        return;
-    }
-    var selectedMenuItemsNames = Array.from(selects[1].options).filter(o => o.selected).map(o => o.text);
-    var selectedMenuItems = Array.from(selects[1].options).filter(o => o.selected).map(o => o.value);
-    var request = {
-        "restaurantId" : selectedRestaurant,
-        "menuItemsIds": selectedMenuItems
-    };
-   elem.disabled = true;
-
+const makeOrder = () => {
+    let restaurant = getRestById(rests, model.selectedRestaurant);
+     let request = {
+            "restaurantId" : model.selectedRestaurant,
+            "menuItemsIds": model.selectedMenuItems.map(menuItem => menuItem.id)
+        };
      $.ajax({
         url: baseUrl + "orders/order/place",
         type: 'POST',
@@ -99,57 +248,23 @@ function makeOrder(elem) {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(request),
         success: function( response ) {
-            result.html("Order with ID=["+response.orderId+"] was place");
-            elem.disabled = false;
-            addWatchOrder(response.orderId, selectedRestaurantName, selectedMenuItemsNames);
+            addWatchOrder(response.orderId, restaurant.name, []);
+            toggleWatching(true);
+            moveToRestaurants();
+
+            $("#message-box").html("Order with ID=["+response.orderId+"] was placed");
+            $("#message-box").show(700);
+            setTimeout(function() {
+                $("#message-box").hide(500);
+            }, 4000);
+
         },
         error: function(e) { // if error occured
-          elem.disabled = false;
           console.log(e);
-          result.html("<font color=red>Failed to place order, please check console log</font>");
         }
       });
 }
-/// End of APIs
 
-$(document).ready(function() {
-
-    $(".restaurants").change(function(e) {
-        var menuItemsSelect = $(this).parents(".form-horizontal").find(".menuItems")[0];
-        if (menuItemsSelect) {
-            updateMenu(this.value, menuItemsSelect);
-        }
-    });
-
-    $.get( baseUrl + "kitchen/menus", function( data ) {
-
-      resturantMenuList = data.resturantMenuList;
-      $(".restaurants").each(function (i, select) {
-        clearSelect(select, 1);
-        var sorted = resturantMenuList.sort(function(a, b) {
-          return (a.restaurantName > b.restaurantName) ? 1 : ((b.restaurantName > a.restaurantName) ? -1 : 0)
-        });
-        sorted.forEach(function (restaurantMenu) {
-            addOption(select, restaurantMenu.restaurantName, restaurantMenu.restaurantId);
-        });
-      });
-    });
-
-
-    setInterval(function () {
-        Object.keys(watchedOrders).forEach(function(orderId) {
-            getOrderStatus(orderId, status => {
-                watchedOrders[orderId] = status.status;
-                // var query = ".watched-orders .order-"+orderId;
-                // $(query+" td")[0].innerText = status.status;
-                var tr=document.getElementsByClassName("order-"+orderId)[0];
-                tr.querySelector("td").innerText=status.status;
-                if (status.status == "DELIVERY_DONE") {
-                    delete watchedOrders[orderId];                    
-                }    
-            });
-        });
-    }, 500);
-
-
-});
+$(window).bind('beforeunload', function(){
+    return 'Are you sure you want to leave?';
+  });
