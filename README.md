@@ -1,6 +1,9 @@
 ### Micro-Services demo using OpenTracing API
 
-<div class="guidez3rdpjs-modal" data-key="lttseslyjx-himavdlrod" data-mtype="g"><img alt="Thumbnail" width="350" src="https://s3-eu-west-1.amazonaws.com/guidez-thumbnails/p/lttseslyjx-himavdlrod_600.jpg"></div><script src="https://sdk.fleeq.io/fleeq-sdk-light.js"></script>
+
+# Tutorial
+* [Read Online](https://gigaspaces.fleeq.io/a/lttseslyjx-himavdlrod?captions=1&narration=1)
+* [Watch Online](https://gigaspaces.fleeq.io/l/lttseslyjx-himavdlrod)
 
 
 # Gateway API (8180)
