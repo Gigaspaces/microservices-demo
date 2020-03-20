@@ -1,9 +1,7 @@
 ### Micro-Services demo using OpenTracing API
 
 
-# Tutorial
-* [Read Online](https://gigaspaces.fleeq.io/a/lttseslyjx-himavdlrod?captions=1&narration=1)
-* [Watch Online](https://gigaspaces.fleeq.io/l/lttseslyjx-himavdlrod)
+[Tutorial](https://gigaspaces.fleeq.io/a/lttseslyjx-himavdlrod?captions=1&narration=1)
 
 
 # Gateway API (8180)
