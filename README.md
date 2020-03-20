@@ -1,6 +1,7 @@
 ### Micro-Services demo using OpenTracing API
 
-<iframe src="https://embed.fleeq.io/l/lttseslyjx-himavdlrod" frameborder="0" allowfullscreen="true" style="width:400px; height: 300px;"></iframe>
+<div class="guidez3rdpjs-modal" data-key="lttseslyjx-himavdlrod" data-mtype="g"><img alt="Thumbnail" width="350" src="https://s3-eu-west-1.amazonaws.com/guidez-thumbnails/p/lttseslyjx-himavdlrod_600.jpg"></div><script src="https://sdk.fleeq.io/fleeq-sdk-light.js"></script>
+
 
 # Gateway API (8180)
 # Delivery Service (8181)
