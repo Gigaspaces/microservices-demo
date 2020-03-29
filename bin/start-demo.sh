@@ -4,8 +4,7 @@ set -ex
 
 echo "Downloading gsctl.jar"
 
-wget https://github.com/Gigaspaces/gsctl/raw/master/gsctl.jar
-
+wget https://gigaspaces-releases-eu.s3.amazonaws.com/gsctl/15.2.0/gsctl.jar
 
 echo "Setting up cluster"
 java -jar gsctl.jar create
