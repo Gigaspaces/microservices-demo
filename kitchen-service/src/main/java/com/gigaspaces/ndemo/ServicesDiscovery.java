@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ServicesDiscovery {
 
-    private static final String servicesUrl = "http://localhost:8500/v1/catalog/service/";
+    private static final String servicesUrl = "https://localhost:8500/v1/catalog/service/";
 
     @Autowired
     private RestTemplate restTemplate;

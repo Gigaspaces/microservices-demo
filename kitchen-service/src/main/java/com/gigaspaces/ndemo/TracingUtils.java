@@ -37,6 +37,7 @@ public class TracingUtils {
         if (GlobalTracer.isRegistered()) {
             Tracer tracer = GlobalTracer.get();
             Span serverSpan = tracer.activeSpan();
+            //TODO try-with-resources
 
             Span span = tracer.buildSpan(name)
                     .asChildOf(serverSpan.context())

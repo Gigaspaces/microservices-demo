@@ -30,7 +30,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <gs.version>15.2.0</gs.version>
+        <gs.version>15.5.0-SNAPSHOT</gs.version>
     </properties>
 
     <dependencies>
