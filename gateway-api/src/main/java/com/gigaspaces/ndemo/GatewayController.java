@@ -1,6 +1,7 @@
 package com.gigaspaces.ndemo;
 
 import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.ConsulRawClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
 import com.gigaspaces.order.model.OrderStatusMsg;
@@ -9,6 +10,11 @@ import com.gigaspaces.tracing.ZipkinTracerBean;
 import io.opentracing.Scope;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +64,7 @@ public class GatewayController {
     @PostMapping("/zipkin/active")
     public boolean setZipkinActiveMode(@RequestParam(name = "active") boolean requestedMode) throws Exception {
         return wrap("gateway-zipkin-set-active", () -> {
-            ConsulClient client = new ConsulClient("https://localhost:8500");
+            ConsulClient client = getClient("https://localhost:8500");
             Response<GetValue> kvValue = client.getKVValue(openTracingKey);
             if (kvValue.getValue() == null) {
                 client.setKVValue(openTracingKey, String.valueOf(requestedMode));
@@ -74,6 +80,25 @@ public class GatewayController {
             }
         });
     }
+
+    public ConsulClient getClient(String agentHost) {
+        try {
+
+            SSLContextBuilder builder = new SSLContextBuilder();
+            builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    builder.build());
+            CloseableHttpClient customHttpClient = HttpClients.custom().setSSLSocketFactory(
+                    sslsf).build();
+            ConsulRawClient rawClient = new ConsulRawClient(agentHost, customHttpClient);
+
+
+            return new ConsulClient(rawClient);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     public <T> T wrap(String name, Callable<T> c) throws Exception {

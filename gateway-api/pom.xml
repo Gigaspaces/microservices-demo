@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
-            <version>1.4.4</version>
+            <version>1.4.5</version>
         </dependency>
     </dependencies>
 
