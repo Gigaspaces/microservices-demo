@@ -58,7 +58,7 @@ public class GatewayController {
     @PostMapping("/zipkin/active")
     public boolean setZipkinActiveMode(@RequestParam(name = "active") boolean requestedMode) throws Exception {
         return wrap("gateway-zipkin-set-active", () -> {
-            ConsulClient client = new ConsulClient("localhost");
+            ConsulClient client = new ConsulClient("https://localhost:8500");
             Response<GetValue> kvValue = client.getKVValue(openTracingKey);
             if (kvValue.getValue() == null) {
                 client.setKVValue(openTracingKey, String.valueOf(requestedMode));
