@@ -1,3 +1,8 @@
 *.iml
 target
 .idea
+gsctl.jar
+cluster.yaml
+services.yaml
+.gsctl/
+logs/
