@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
-set -e
+set -ex
+source env.sh
 export GS_CLI_VERBOSE=true
 
-rm -rf gsctl.jar
-
-
 echo "Downloading gsctl.jar"
-
-wget https://github.com/Gigaspaces/gsctl/raw/master/gsctl.jar 
+wget https://gigaspaces-releases-eu.s3.amazonaws.com/gsctl-ea/${GSCTL_VERSION}/gsctl.jar
 
 echo "Setting up cluster"
 java -jar gsctl.jar create

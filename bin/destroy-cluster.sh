@@ -4,3 +4,4 @@ export GS_CLI_VERBOSE=true
 
 java -jar gsctl.jar destroy
 
+rm -rf gsctl.jar cluster.yaml services.yaml .gsctl/ logs/

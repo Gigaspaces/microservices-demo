@@ -2,20 +2,5 @@
 
 set -ex
 
-echo "Downloading gsctl.jar"
-
-wget https://gigaspaces-releases-eu.s3.amazonaws.com/gsctl/15.5.0-m10/gsctl.jar
-
-echo "Setting up cluster"
-java -jar gsctl.jar create
-
-echo "Deploying services"
-for space in kitchen-space delivery-space orders-space; do
-	java -jar gsctl.jar deploy $space https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$space.jar
-done
-
-for service in kitchen-service delivery-service orders-service gateway-api user-app; do
-	java -jar gsctl.jar deploy $service https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$service.war
-done
-
-java -jar gsctl.jar list-services
+./create-cluster.sh
+./deploy-services.sh
