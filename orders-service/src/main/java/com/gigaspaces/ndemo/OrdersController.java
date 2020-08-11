@@ -2,7 +2,7 @@ package com.gigaspaces.ndemo;
 
 import com.gigaspaces.client.ChangeResult;
 import com.gigaspaces.client.ChangeSet;
-import com.gigaspaces.ndemo.model.OrderStatus;
+import com.gigaspaces.order.model.OrderStatus;
 import com.gigaspaces.ndemo.model.Ticket;
 import com.gigaspaces.ndemo.model.TicketNotFoundException;
 import com.gigaspaces.order.model.OrderStatusMsg;
@@ -20,10 +20,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import static com.gigaspaces.ndemo.model.OrderStatus.PENDING_PREPARATION;
+import static com.gigaspaces.order.model.OrderStatus.PENDING_PREPARATION;
 
 @RestController
 public class OrdersController {
@@ -42,10 +43,12 @@ public class OrdersController {
     @PostMapping("/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
         return wrap("orders-service : place-order", () -> {
+            Random random = new Random();
             Ticket ticket = new Ticket();
             ticket.setRestaurantId(placeOrderRequest.getRestaurantId());
             ticket.setMenuItems(placeOrderRequest.getMenuItemsIds());
             ticket.setStatus(PENDING_PREPARATION);
+            ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
             String uid = context.getUID();
             logger.severe("%%%%%%%%%%%% Order id is "+uid+" %%%%%%%%%%%%");

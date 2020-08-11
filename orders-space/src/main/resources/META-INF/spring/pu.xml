@@ -10,7 +10,23 @@
     -->
     <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
 
-    <os-core:embedded-space id="space" space-name="orders-space" />
+    <bean id="mongoClient"
+          class="com.gigaspaces.persistency.MongoClientConnectorBeanFactory">
+        <property name="db" value="orders-db" />
+        <property name="config">
+            <bean id="config" class="com.mongodb.MongoClient">
+                <constructor-arg value="mongodb.service.consul" type="java.lang.String" />
+                <constructor-arg value="27017" type="int" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="ordersSpaceDataSource"
+          class="com.gigaspaces.persistency.MongoSpaceDataSourceBeanFactory">
+        <property name="mongoClientConnector" ref="mongoClient" />
+    </bean>
+
+    <os-core:space id="space" schema="persistent" mirror="true" space-data-source="ordersSpaceDataSource" url="/./orders-space"/>
+    
 
     <os-core:giga-space id="gigaSpace" space="space"/>
 

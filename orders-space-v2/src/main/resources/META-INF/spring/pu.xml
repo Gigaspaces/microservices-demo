@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:os-core="http://www.openspaces.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.openspaces.org/schema/core http://www.openspaces.org/schema/core/openspaces-core.xsd">
+
+    <!--
+        Spring property configurer which allows us to use system properties (such as user.name).
+    -->
+    <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+
+    <bean id="mongoClient"
+          class="com.gigaspaces.persistency.MongoClientConnectorBeanFactory">
+        <property name="db" value="orders-db-v2" />
+        <property name="config">
+            <bean id="config" class="com.mongodb.MongoClient">
+                <constructor-arg value="mongodb.service.consul" type="java.lang.String" />
+                <constructor-arg value="27017" type="int" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="ordersSpaceDataSource"
+          class="com.gigaspaces.persistency.MongoSpaceDataSourceBeanFactory">
+        <property name="mongoClientConnector" ref="mongoClient" />
+    </bean>
+
+    <os-core:space id="space" schema="persistent" mirror="true" space-data-source="ordersSpaceDataSource" url="/./orders-space-v2"/>
+    
+
+    <os-core:giga-space id="gigaSpace" space="space"/>
+
+</beans>

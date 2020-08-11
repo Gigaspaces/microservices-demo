@@ -16,6 +16,14 @@
         <module>delivery-service-api</module>
         <module>delivery-space</module>
         <module>user-app</module>
+        <module>orders-mirror</module>
+        <module>orders-pause-db-mirror</module>
+        <module>orders-final-mirror</module>
+        <module>v2-load-orders-db</module>
+        <module>orders-space-v2</module>
+        <module>orders-service-v2</module>
+        <module>orders-mirror-v2</module>
+        <module>type-adapters-common</module>
     </modules>
 
     <repositories>
@@ -31,6 +39,8 @@
 
     <properties>
         <gs.version>15.5.0-rc1-mon-7</gs.version>
+        <kafka.version>2.5.0</kafka.version>
+        <mongodb.driver.version>3.2.0</mongodb.driver.version>
     </properties>
 
     <dependencies>
@@ -83,11 +93,16 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.gigaspaces</groupId>
+            <artifactId>xap-mongodb</artifactId>
+            <version>${gs.version}</version>
+        </dependency>
     </dependencies>
 
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>

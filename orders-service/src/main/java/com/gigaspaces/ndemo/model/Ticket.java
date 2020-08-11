@@ -2,6 +2,7 @@ package com.gigaspaces.ndemo.model;
 
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
+import com.gigaspaces.order.model.OrderStatus;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Ticket {
     private String RestaurantId;
     private List<String> menuItems;
     private OrderStatus status;
+    private Integer withCutlery;
 
     public Ticket() {
     }
@@ -51,5 +53,13 @@ public class Ticket {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Integer isWithCutlery() {
+        return withCutlery;
+    }
+
+    public void setWithCutlery(Integer withCutlery) {
+        this.withCutlery = withCutlery;
     }
 }
