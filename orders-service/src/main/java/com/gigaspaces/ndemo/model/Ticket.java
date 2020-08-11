@@ -55,7 +55,7 @@ public class Ticket {
         this.status = status;
     }
 
-    public Integer isWithCutlery() {
+    public Integer getWithCutlery() {
         return withCutlery;
     }
 

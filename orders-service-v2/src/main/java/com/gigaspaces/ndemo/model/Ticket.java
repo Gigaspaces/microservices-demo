@@ -55,7 +55,7 @@ public class Ticket {
         this.status = status;
     }
 
-    public Boolean isWithCutlery() {
+    public Boolean getWithCutlery() {
         return withCutlery;
     }
 
@@ -63,7 +63,7 @@ public class Ticket {
         this.withCutlery = withCutlery;
     }
 
-    public Boolean isDelivery() {
+    public Boolean getDelivery() {
         return delivery;
     }
 
