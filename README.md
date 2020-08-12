@@ -1,6 +1,10 @@
 ### Micro-Services demo using OpenTracing API
+#### Prerequisites
+* curl
+* jq
 
-Fill GS_HOME and GSCTL_VERSION in bin/env.sh and then run bin/statrt-demo.sh
+####How to run  
+Fill GSCTL_VERSION in env.sh and then run start-demo.sh from the bin folder
 
 [Tutorial](https://gigaspaces.fleeq.io/a/lttseslyjx-himavdlrod?captions=1&narration=1)
 
