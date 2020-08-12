@@ -46,8 +46,9 @@ public class OrdersController {
             Random random = new Random();
             Ticket ticket = new Ticket();
             ticket.setRestaurantId(placeOrderRequest.getRestaurantId());
+            ticket.setRouting(placeOrderRequest.getRestaurantId().length());
             ticket.setMenuItems(placeOrderRequest.getMenuItemsIds());
-            ticket.setStatus(PENDING_PREPARATION);
+            ticket.setStatus(PENDING_PREPARATION.name());
             ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
             String uid = context.getUID();
@@ -57,7 +58,6 @@ public class OrdersController {
             response.setStatus(Status.PENDING_PREPARATION);
 
             sendToKitchen(placeOrderRequest, uid);
-            //TODO - write to kafka topic
             return response;
         });
     }
@@ -91,11 +91,10 @@ public class OrdersController {
             String orderId = updateOrderRequest.getOrderId();
             Status status = updateOrderRequest.getStatus();
             ChangeResult<Ticket> result = gigaSpace.change(new Ticket(orderId),
-                    new ChangeSet().set("status", OrderStatus.fromStatus(status)));
+                    new ChangeSet().set("status", OrderStatus.fromStatus(status).name()));
             if (result.getNumberOfChangedEntries() == 0) {
                 throw new TicketNotFoundException(orderId);
             }
-            //TODO - write to kafka topic
             return new OrderStatusMsg(orderId, status);
         });
     }

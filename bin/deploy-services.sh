@@ -7,19 +7,19 @@ echo "Deploying services"
 declare -a requestIds
 declare -a servicesNames
 for space in kitchen-space delivery-space orders-space; do
-    deploy_space "$space" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$space.jar"
+    deploy_space "$space" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/$space.jar"
     requestIds+=($requestId)
     servicesNames+=($space)
 done
 
 for mirror in orders-mirror; do
-	deploy_stateless "$mirror" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$mirror.jar"
+	deploy_stateless "$mirror" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/$mirror.jar"
     requestIds+=($requestId)
     servicesNames+=($mirror)
 done
 
 for service in kitchen-service delivery-service orders-service gateway-api user-app; do
-	deploy_stateless "$service" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$service.war"
+	deploy_stateless "$service" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/$service.war"
     requestIds+=($requestId)
     servicesNames+=($service)
 done

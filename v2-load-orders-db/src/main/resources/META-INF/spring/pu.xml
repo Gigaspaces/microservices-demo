@@ -14,9 +14,6 @@
     <os-core:annotation-support/>
     <context:component-scan base-package="com.gigaspaces.ndemo" />
 
-    <!-- Enable GigaSpaces annotation support -->
-    <os-core:annotation-support/>
-    <context:component-scan base-package="com.gigaspaces.ndemo" />
 
     <!-- Spring property configurer which allows us to use system properties (such as user.name). -->
     <bean id="propertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -26,7 +23,7 @@
                 <prop key="lookupGroups">xap-15.5.0</prop>
                 <prop key="mongoDbIp">mongodb.service.consul</prop>
                 <prop key="mongoDbPort">27017</prop>
-                <prop key="dbName">v1-db</prop>
+                <prop key="dbName">orders-db</prop>
             </props>
         </property>
     </bean>
@@ -45,7 +42,7 @@
     <bean id="ticketSchemaAdapter" class="com.gigaspaces.ndemo.TicketSchemaAdapter"/>
 
     <!-- Defines an embedded space -->
-    <os-core:space-proxy id="space" space-name="${spaceName}" lookup-groups="${lookupGroups}">
+    <os-core:space-proxy id="space" space-name="${spaceName}">
         <!-- Optional: additionan space configuration goes here -->
     </os-core:space-proxy>
 

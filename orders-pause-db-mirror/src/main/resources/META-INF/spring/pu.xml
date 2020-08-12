@@ -33,7 +33,7 @@
     <bean id="kafkaSpaceSynchronizationEndpoint" class="org.openspaces.persistency.kafka.KafkaSpaceSynchronizationEndpointBeanFactory" >
 <!--        <property name="primaryEndpoint" ref="mongoSpaceSyncEndpoint"/>-->
         <property name="kafkaBootstrapServers" value="kafka-0.service.consul:9092"/>
-        <property name="topic" value="orders-space-topic"/>
+        <property name="topic" value="${space.name}-topic"/>
     </bean>
 
     <!--

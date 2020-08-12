@@ -4,8 +4,8 @@ public enum OrderStatus {
     PENDING_PREPARATION, PREPARING, PREPARATION_DONE,
     PENDING_DELIVERY, DELIVERING, DELIVERY_DONE;
 
-    public static Status toStatus(OrderStatus orderStatus) {
-
+    public static Status toStatus(String orderStatusString) {
+        OrderStatus orderStatus = OrderStatus.valueOf(orderStatusString);
         switch (orderStatus) {
             case PENDING_PREPARATION:
                 return Status.PENDING_PREPARATION;
