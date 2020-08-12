@@ -13,7 +13,7 @@ for space in kitchen-space delivery-space orders-space; do
 done
 
 for mirror in orders-mirror; do
-	deploy_stateless "$mirror" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$mirror.war"
+	deploy_stateless "$mirror" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$mirror.jar"
     requestIds+=($requestId)
     servicesNames+=($mirror)
 done
