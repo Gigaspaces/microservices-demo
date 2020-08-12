@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export GS_HOME=/home/alons/Downloads/builds/gigaspaces-xap-enterprise-15.5.0-rc1-sun-6
-export GSCTL_VERSION=15.5.0-rc1-mon-7
+export GSCTL_VERSION=15.5.0-rc1-ci-91
 export GS_CLI_VERBOSE=true
 
 if [[ -d ".gsctl/" ]]; then
