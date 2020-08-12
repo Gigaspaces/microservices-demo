@@ -8,23 +8,6 @@ function echo_green {
   echo -e "${GREEN}$message"
 }
 
-function deploy_space {
-  local puName="$1"
-  local resource="$2"
-  ${GS_HOME}/bin/gs.sh --server ${MANAGER_REST} --username gs-admin --password ${TOKEN} pu deploy $puName https://github.com/Gigaspaces/microservices-demo/raw/master/jars/resource --partitions=1 --ha
-}
-
-function deploy_stateless_pu {
-  local puName="$1"
-  local resource="$2"
-  ${GS_HOME}/bin/gs.sh --server ${MANAGER_REST} --username gs-admin --password ${TOKEN} pu deploy $puName https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$resource --instances=1
-}
-
-function undeploy_pu {
-  local puName="$1"
-  ${GS_HOME}/bin/gs.sh --server ${MANAGER_REST} --username gs-admin --password ${TOKEN} --timeout 120 pu undeploy $puName
-}
-
 echo_green "\nWelcome to GigaSpaces schema evolution demo\n
 This demo is run on GigaSpaces ElasticGrid\n
 It shows the full transition between a running orders service to a new service, containing an updated schema\n"
@@ -34,13 +17,24 @@ echo_green "\n************************************************\n
 The first step is deployment of the v2 orders service:\n"
 read -rp "To start v2 order service deployment, press enter: "
 
-deploy_stateless_pu "orders-service-v2" "orders-service-v2.war"
-deploy_space "orders-space-v2" "orders-space-v2.jar"
-deploy_stateless_pu "orders-mirror-v2" "orders-mirror-v2.jar"
-
+declare -a requestIds
+declare -a servicesNames
+deploy_stateless "orders-service-v2" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/orders-service-v2.war"
+requestIds+=($requestId)
+servicesNames+=("orders-service-v2")
+deploy_space "orders-space-v2" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/orders-space-v2.jar"
+requestIds+=($requestId)
+servicesNames+=("orders-space-v2")
+deploy_stateless "orders-mirror-v2" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/orders-mirror-v2.jar"
+requestIds+=($requestId)
+servicesNames+=("orders-mirror-v2")
+for ((i=0;i<${#requestIds[@]};++i)); do
+    echo "Asserting deployment of service ${servicesNames[i]}"
+    assertRequest "${requestIds[i]}"
+done
 echo_green "************************************************\n
 V2 service deployment is done, it is idle for now:\n
-you can view all processes in https://${MANAGER_REST}/services\n"
+you can view all processes in ${MANAGER_REST}/services\n"
 
 read  -rp "To move to the next step, press enter: "
 echo_green "\n************************************************\n
@@ -54,11 +48,14 @@ NOTICE: the data written to v2 is adapted to the new v2 schema. The modified obj
 read  -rp "To run this step, press enter: "
 echo_green "\nRunning v1 db load to v2...\n"
 undeploy_pu "orders-mirror"
-deploy_stateless_pu "orders-mirror" "orders-pause-db-mirror.jar"
-echo_green "Deployed the new v1 mirror service, persistence to v1 mongodb database will be paused.\n"
-deploy_stateless_pu "v2-load-orders-db" "v2-load-orders-db.jar"
-echo_green "Deployed the v2-load-orders-db, v1 database will be written and adapted to v2 orders space.\n"
-echo_green "load orders db step is done, you can view the changes in https://${MANAGER_REST}/spaces\n"
+assertRequest "$requestId"
+deploy_stateless "orders-mirror" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/orders-pause-db-mirror.jar"
+assertRequest "$requestId"
+echo_green "\nDeployed the new v1 mirror service, persistence to v1 mongodb database will be paused.\n"
+deploy_stateless "v2-load-orders-db" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/v2-load-orders-db.jar"
+assertRequest "$requestId"
+echo_green "\nDeployed the v2-load-orders-db, v1 database will be written and adapted to v2 orders space.\n"
+echo_green "\nLoad orders db step is done, you can view the changes in ${MANAGER_REST}/spaces\n"
 read  -rp "To move to the next step, press enter: "
 echo_green "\n************************************************\n
 The next and final step in th demo is redirection of running orders service traffic to v2\n
@@ -69,9 +66,11 @@ The next and final step in th demo is redirection of running orders service traf
 read -rp "To run the next step - v1 traffic redirection to v2, press enter: "
 echo_green "\nRunning v1 to v2 service traffic redirection ...\n"
 undeploy_pu "orders-mirror"
-deploy_stateless_pu "orders-mirror" "orders-final-mirror.jar"
-echo_green "Final step is done, you can view the changes in https://${MANAGER_REST}/spaces\n"
-echo_green "Also, try to place a new order, and see that it is replicated to v2"
+assertRequest "$requestId"
+deploy_stateless "orders-mirror" "https://github.com/Gigaspaces/microservices-demo/raw/dev-alon/jars/orders-final-mirror.jar"
+assertRequest "$requestId"
+echo_green "\nFinal step is done, you can view the changes in ${MANAGER_REST}/spaces\n"
+echo_green "\nAlso, try to place a new order, and see that it is replicated to v2"
 read -rp "To exit the demo, press enter: "
 
 

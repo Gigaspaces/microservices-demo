@@ -2,7 +2,7 @@ package com.gigaspaces.ndemo.model;
 
 import com.gigaspaces.annotation.pojo.SpaceClass;
 import com.gigaspaces.annotation.pojo.SpaceId;
-import com.gigaspaces.order.model.OrderStatus;
+import com.gigaspaces.annotation.pojo.SpaceRouting;
 
 import java.util.List;
 
@@ -10,9 +10,10 @@ import java.util.List;
 public class Ticket {
 
     private String orderId;
-    private String RestaurantId;
+    private Integer routing;
+    private String restaurantId;
     private List<String> menuItems;
-    private OrderStatus status;
+    private String status;
     private Integer withCutlery;
 
     public Ticket() {
@@ -31,12 +32,21 @@ public class Ticket {
         this.orderId = orderId;
     }
 
+    @SpaceRouting
+    public Integer getRouting() {
+        return routing;
+    }
+
+    public void setRouting(Integer routing) {
+        this.routing = routing;
+    }
+
     public String getRestaurantId() {
-        return RestaurantId;
+        return restaurantId;
     }
 
     public void setRestaurantId(String restaurantId) {
-        RestaurantId = restaurantId;
+        this.restaurantId = restaurantId;
     }
 
     public List<String> getMenuItems() {
@@ -47,11 +57,11 @@ public class Ticket {
         this.menuItems = menuItems;
     }
 
-    public OrderStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

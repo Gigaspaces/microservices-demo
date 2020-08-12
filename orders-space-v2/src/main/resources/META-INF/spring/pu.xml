@@ -20,14 +20,25 @@
             </bean>
         </property>
     </bean>
-    <bean id="ordersSpaceDataSource"
+    <bean id="v2OrdersSpaceDataSource"
           class="com.gigaspaces.persistency.MongoSpaceDataSourceBeanFactory">
         <property name="mongoClientConnector" ref="mongoClient" />
     </bean>
 
-    <os-core:space id="space" schema="persistent" mirror="true" space-data-source="ordersSpaceDataSource" url="/./orders-space-v2"/>
+    <os-core:space id="v2-space" schema="persistent" mirror="true" space-data-source="v2OrdersSpaceDataSource" url="/./orders-space-v2">
+        <os-core:properties>
+            <props>
+                <prop key="space-config.engine.cache_policy">1</prop>
+                <prop key="cluster-config.cache-loader.central-data-source">true</prop>
+                <prop key="cluster-config.mirror-service.supports-partial-update">true</prop>
+                <prop key="cluster-config.mirror-service.url">
+                    jini://*/v2-mirror-service_container/v2-mirror-service
+                </prop>
+            </props>
+        </os-core:properties>
+    </os-core:space>
     
 
-    <os-core:giga-space id="gigaSpace" space="space"/>
+    <os-core:giga-space id="gigaSpace" space="v2-space"/>
 
 </beans>
