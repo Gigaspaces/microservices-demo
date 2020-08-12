@@ -2,13 +2,9 @@ package com.gigaspaces.ndemo;
 
 import com.gigaspaces.client.ChangeResult;
 import com.gigaspaces.client.ChangeSet;
-import com.gigaspaces.ndemo.model.OrderStatus;
 import com.gigaspaces.ndemo.model.Ticket;
 import com.gigaspaces.ndemo.model.TicketNotFoundException;
-import com.gigaspaces.order.model.OrderStatusMsg;
-import com.gigaspaces.order.model.PlaceOrderRequest;
-import com.gigaspaces.order.model.Status;
-import com.gigaspaces.order.model.UpdateOrderRequest;
+import com.gigaspaces.order.model.*;
 import com.j_spaces.core.LeaseContext;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
@@ -24,7 +20,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import static com.gigaspaces.ndemo.model.OrderStatus.PENDING_PREPARATION;
+import static com.gigaspaces.order.model.OrderStatus.PENDING_PREPARATION;
 
 @RestController
 public class OrdersController {
@@ -47,7 +43,7 @@ public class OrdersController {
             Ticket ticket = new Ticket();
             ticket.setRestaurantId(placeOrderRequest.getRestaurantId());
             ticket.setMenuItems(placeOrderRequest.getMenuItemsIds());
-            ticket.setStatus(PENDING_PREPARATION);
+            ticket.setStatus(PENDING_PREPARATION.name());
 //            ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
             String uid = context.getUID();
@@ -57,7 +53,6 @@ public class OrdersController {
             response.setStatus(Status.PENDING_PREPARATION);
 
             sendToKitchen(placeOrderRequest, uid);
-            //TODO - write to kafka topic
             return response;
         });
     }
@@ -95,7 +90,6 @@ public class OrdersController {
             if (result.getNumberOfChangedEntries() == 0) {
                 throw new TicketNotFoundException(orderId);
             }
-            //TODO - write to kafka topic
             return new OrderStatusMsg(orderId, status);
         });
     }

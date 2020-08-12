@@ -33,14 +33,14 @@
     <bean id="kafkaSpaceSynchronizationEndpoint" class="org.openspaces.persistency.kafka.KafkaSpaceSynchronizationEndpointBeanFactory" >
         <property name="primaryEndpoint" ref="mongoSpaceSyncEndpoint"/>
         <property name="kafkaBootstrapServers" value="kafka-0.service.consul:9092"/>
-        <property name="topic" value="orders-space-topic"/>
+        <property name="topic" value="${space.name}-topic"/>
     </bean>
 
     <!--
         The mirror space. Uses the Kafka external data source. Persists changes done on the Space that
         connects to this mirror space into the Kafka.
     -->
-    <os-core:mirror id="mirror" url="/./mirror-service" space-sync-endpoint="kafkaSpaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
+    <os-core:mirror id="v2-mirror" url="/./v2-mirror-service" space-sync-endpoint="kafkaSpaceSynchronizationEndpoint" operation-grouping="group-by-replication-bulk">
         <os-core:source-space name="${space.name}" partitions="1" backups="1"/>
     </os-core:mirror>
 
