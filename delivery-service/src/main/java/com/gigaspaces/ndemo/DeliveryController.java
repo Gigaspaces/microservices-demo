@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 @RestController
@@ -35,7 +35,7 @@ public class DeliveryController {
     @Autowired
     private TracingSpanMap tracingSpanMap;
 
-    private static AtomicInteger idGenerator = new AtomicInteger(0);
+    private static AtomicLong idGenerator = new AtomicLong(System.currentTimeMillis());
 
     private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
 

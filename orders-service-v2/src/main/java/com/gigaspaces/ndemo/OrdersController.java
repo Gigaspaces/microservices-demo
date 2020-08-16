@@ -22,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import static com.gigaspaces.ndemo.model.OrderStatus.PENDING_PREPARATION;
@@ -39,8 +38,6 @@ public class OrdersController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static AtomicInteger idGenerator = new AtomicInteger(0);
-
     private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
 
     @PostMapping("/order/place")
@@ -48,18 +45,18 @@ public class OrdersController {
         return wrap("orders-service : place-order", () -> {
             Random random = new Random();
             Ticket ticket = new Ticket();
-            ticket.setOrderId(String.valueOf(idGenerator.incrementAndGet()));
             ticket.setRestaurantId(placeOrderRequest.getRestaurantId());
             ticket.setMenuItems(placeOrderRequest.getMenuItemsIds());
             ticket.setStatus(PENDING_PREPARATION);
 //            ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
-            logger.severe("%%%%%%%%%%%% Order id is "+ticket.getOrderId()+" %%%%%%%%%%%%");
+            String uid = context.getUID();
+            logger.severe("%%%%%%%%%%%% Order id is "+uid+" %%%%%%%%%%%%");
             OrderStatusMsg response = new OrderStatusMsg();
-            response.setOrderId(ticket.getOrderId());
+            response.setOrderId(uid);
             response.setStatus(Status.PENDING_PREPARATION);
 
-            sendToKitchen(placeOrderRequest, ticket.getOrderId());
+            sendToKitchen(placeOrderRequest, uid);
             //TODO - write to kafka topic
             return response;
         });
