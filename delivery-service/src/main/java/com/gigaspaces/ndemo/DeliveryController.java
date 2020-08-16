@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 @RestController
 public class DeliveryController {
 
-    private static AtomicLong idGenerator = new AtomicLong(System.currentTimeMillis());
+    private static AtomicLong idGenerator = null;
     private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
     @Autowired
     private GigaSpace gigaSpace;
