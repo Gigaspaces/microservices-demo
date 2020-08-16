@@ -66,7 +66,7 @@ public class DeliveryController {
     private AtomicLong getGenerator() {
         if (idGenerator == null) {
             long initialValue;
-            int count = gigaSpace.count(new SQLQuery<Delivery>());
+            int count = gigaSpace.count(new SQLQuery<>(Delivery.class, ""));
             logger.info("gigaspaces delivery count = "+count);
             if (count == 0) {
                 initialValue = System.currentTimeMillis();
