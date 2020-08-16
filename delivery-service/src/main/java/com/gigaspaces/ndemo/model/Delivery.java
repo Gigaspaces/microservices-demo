@@ -16,7 +16,7 @@ public class Delivery {
     public Delivery() {
     }
 
-    @SpaceId(autoGenerate = true)
+    @SpaceId
     public String getDeliveryId() {
         return deliveryId;
     }

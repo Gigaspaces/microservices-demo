@@ -22,7 +22,7 @@ public class Ticket {
         this.orderId = orderId;
     }
 
-    @SpaceId(autoGenerate = true)
+    @SpaceId
     public String getOrderId() {
         return orderId;
     }
