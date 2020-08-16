@@ -65,15 +65,17 @@ public class DeliveryController {
 
     private AtomicLong getGenerator() {
         if (idGenerator == null) {
-            if (gigaSpace.count(new Delivery()) == 0) {
-                logger.info("initializing idGenerator to 0");
-                idGenerator = new AtomicLong(System.currentTimeMillis());
+            long initialValue;
+            int count = gigaSpace.count(new SQLQuery<Delivery>());
+            logger.info("gigaspaces delivery count = "+count);
+            if (count == 0) {
+                initialValue = System.currentTimeMillis();
             } else {
                 AggregationResult result = gigaSpace.aggregate(new SQLQuery<Delivery>(), new AggregationSet().add(new MaxDeliveryIdAggregator()));
-                long initialValue = ((Long) result.get("max(deliveryId)")) + 1;
-                logger.info("initializing idGenerator to "+initialValue);
-                idGenerator = new AtomicLong(initialValue);
+                initialValue = ((Long) result.get("max(deliveryId)")) + 1;
             }
+            logger.info("initializing idGenerator to "+initialValue);
+            idGenerator = new AtomicLong(initialValue);
         }
         return idGenerator;
     }
