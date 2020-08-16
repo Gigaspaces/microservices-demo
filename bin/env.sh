@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export GSCTL_VERSION=15.5.0-rc1-ci-87
+export GSCTL_VERSION=15.5.0-rc2-ci-21
 export GS_LICENSE=tryme
 export GS_CLI_VERBOSE=true
 
@@ -18,7 +18,7 @@ fi
 function deploy_dynamic_space {
   local puName="$1"
   local resource="$2"
-  echo -e "Deploying service $puName..\n"
+  echo -e "Deploying space $puName..\n"
 
   cat > template.json <<EOF
 {
@@ -30,20 +30,19 @@ function deploy_dynamic_space {
        "backupsPerPartition": 1
      },
      "contextProperties": {
-       "pu.dynamic-partitioning": "true",
-       "license": "${GS_LICENSE}"
+       "license": "${GS_LICENSE}",
+       "pu.dynamic-partitioning": "true"
      }
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-  assertRequest $requestId
   echo -e "Finished deployment of service $puName...\n"
 }
 
 function deploy_space {
   local puName="$1"
   local resource="$2"
-  echo -e "Deploying service $puName..\n"
+  echo -e "Deploying space $puName..\n"
 
   cat > template.json <<EOF
 {
@@ -60,7 +59,6 @@ function deploy_space {
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-  assertRequest $requestId
   echo -e "Finished deployment of service $puName...\n"
 }
 
@@ -82,7 +80,6 @@ function deploy_stateless {
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-  assertRequest $requestId
 }
 
 function assertRequest {
