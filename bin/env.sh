@@ -36,7 +36,7 @@ function deploy_dynamic_space {
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-#  assertRequest $requestId
+  assertRequest $requestId
   echo -e "Finished deployment of service $puName...\n"
 }
 
@@ -60,7 +60,7 @@ function deploy_space {
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-#  assertRequest $requestId
+  assertRequest $requestId
   echo -e "Finished deployment of service $puName...\n"
 }
 
@@ -82,7 +82,7 @@ function deploy_stateless {
    }
 EOF
   requestId=$(curl -X POST --insecure --silent --header 'Content-Type: application/json' --header 'Accept: text/plain' -u gs-admin:${TOKEN} -d @template.json ${MANAGER_REST}/v2/pus | jq .)
-#  assertRequest $requestId
+  assertRequest $requestId
 }
 
 function assertRequest {
