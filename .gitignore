@@ -6,3 +6,4 @@ bin/cluster.yaml
 bin/services.yaml
 bin/.gsctl/
 bin/logs/
+bin/*.json

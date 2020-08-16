@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 @Component
 public class DeliveryPreLoader {
 
-    private final int couriersCount = 3;
+    private final int couriersCount = 10;
 
     @Autowired
     private GigaSpace gigaSpace;
