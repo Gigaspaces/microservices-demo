@@ -53,13 +53,12 @@ public class OrdersController {
             ticket.setStatus(PENDING_PREPARATION);
             ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
-            String uid = context.getUID();
-            logger.severe("%%%%%%%%%%%% Order id is "+uid+" %%%%%%%%%%%%");
+            logger.severe("%%%%%%%%%%%% Order id is "+ticket.getOrderId()+" %%%%%%%%%%%%");
             OrderStatusMsg response = new OrderStatusMsg();
-            response.setOrderId(uid);
+            response.setOrderId(ticket.getOrderId());
             response.setStatus(Status.PENDING_PREPARATION);
 
-            sendToKitchen(placeOrderRequest, uid);
+            sendToKitchen(placeOrderRequest, ticket.getOrderId());
             //TODO - write to kafka topic
             return response;
         });
