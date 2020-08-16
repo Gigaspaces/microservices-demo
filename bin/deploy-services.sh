@@ -6,7 +6,13 @@ source env.sh
 echo "Deploying services"
 declare -a requestIds
 declare -a servicesNames
-for space in kitchen-space delivery-space orders-space; do
+for space in delivery-space; do
+    deploy_dynamic_space "$space" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$space.jar"
+    requestIds+=($requestId)
+    servicesNames+=($space)
+done
+
+for space in kitchen-space orders-space; do
     deploy_space "$space" "https://github.com/Gigaspaces/microservices-demo/raw/master/jars/$space.jar"
     requestIds+=($requestId)
     servicesNames+=($space)

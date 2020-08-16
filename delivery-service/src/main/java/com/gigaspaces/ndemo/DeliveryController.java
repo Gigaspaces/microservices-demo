@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 @RestController
@@ -34,6 +35,8 @@ public class DeliveryController {
     @Autowired
     private TracingSpanMap tracingSpanMap;
 
+    private static AtomicInteger idGenerator = new AtomicInteger(0);
+
     private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
 
     @PostMapping("/deliver")
@@ -42,6 +45,7 @@ public class DeliveryController {
 
             logger.severe("%%%%%%%%% deliver request order id = "+deliverOrderRequest.getOrderId()+" %%%%%%%%%");
             Delivery delivery = new Delivery();
+            delivery.setDeliveryId(String.valueOf(idGenerator.incrementAndGet()));
             delivery.setOrderId(deliverOrderRequest.getOrderId());
             delivery.setRegion(deliverOrderRequest.getRegion());
             delivery.setTaken(false);

@@ -16,11 +16,23 @@ function waitformanager {
 }
 
 function deploywar {
-    ${GS_DIR}/bin/gs.sh pu deploy $1 $1/target/$1.war
+    ${GS_DIR}/bin/gs.sh container create localhost
+    ${GS_DIR}/bin/gs.sh service deploy $1 ../$1/target/$1.war
 }
 
-function deployjar {
-    ${GS_DIR}/bin/gs.sh pu deploy $1 $1/target/$1.jar
+function deployStatelessJar {
+    ${GS_DIR}/bin/gs.sh container create localhost
+    ${GS_DIR}/bin/gs.sh service deploy $1 ../$1/target/$1.jar
+}
+
+function deployDynamicJar {
+    ${GS_DIR}/bin/gs.sh container create localhost --count=2
+    ${GS_DIR}/bin/gs.sh service deploy $1 ../$1/target/$1.jar --partitions=1 --ha -p=pu.dynamic-partitioning=true
+}
+
+function deployStatefulJar {
+    ${GS_DIR}/bin/gs.sh container create localhost --count=2
+    ${GS_DIR}/bin/gs.sh service deploy $1 ../$1/target/$1.jar --partitions=1 --ha
 }
 
 
@@ -31,15 +43,13 @@ fi
 
 waitformanager
 
-deployjar delivery-space
-deploywar delivery-service
+deployDynamicJar delivery-space
+deployStatefulJar kitchen-space
+deployStatefulJar orders-space
 
-deployjar kitchen-space
+deployStatelessJar orders-mirror
 deploywar kitchen-service
-
-deployjar orders-space
+deploywar delivery-service
 deploywar orders-service
-
 deploywar gateway-api
-
 deploywar user-app
