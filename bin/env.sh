@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export GSCTL_VERSION=15.5.0-rc2-ci-21
+export GSCTL_VERSION=15.5.0-rc2-sun-5
 export GS_LICENSE=tryme
 export GS_CLI_VERBOSE=true
 
