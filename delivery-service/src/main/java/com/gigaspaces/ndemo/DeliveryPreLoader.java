@@ -110,7 +110,7 @@ public class DeliveryPreLoader {
             UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERING);
             OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
             try {
-                Thread.sleep(20000);
+                Thread.sleep(30);
             } catch (InterruptedException ignored) {
                 Thread.currentThread().interrupt();
             }
