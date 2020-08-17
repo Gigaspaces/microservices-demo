@@ -50,8 +50,8 @@ public class DeliveryPreLoader {
             String id = String.valueOf(i);
             Courier courier = new Courier(id, "courier-" + i, "050600000" + i, regions[i%3], true);
             gigaSpace.write(courier);
-            findCourier.submit(new MyCourier(id, regions[i], gigaSpace, servicesDiscovery, restTemplate, tracingSpanMap));
-            logger.severe("%%%%%%%%% Added courier " + courier + ", region = " + regions[i] + " %%%%%%%%%");
+            findCourier.submit(new MyCourier(id, regions[i%3], gigaSpace, servicesDiscovery, restTemplate, tracingSpanMap));
+            logger.severe("%%%%%%%%% Added courier " + courier + ", region = " + regions[i%3] + " %%%%%%%%%");
         }
     }
 
