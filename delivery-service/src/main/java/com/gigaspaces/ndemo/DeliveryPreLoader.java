@@ -48,10 +48,10 @@ public class DeliveryPreLoader {
         String[] regions = new String[]{"West side","Up town","Down town"};
         for (int i = 0; i < couriersCount; i++) {
             String id = String.valueOf(i);
-            Courier courier = new Courier(id, "courier-" + i, "050600000" + i, regions[i], true);
+            Courier courier = new Courier(id, "courier-" + i, "050600000" + i, regions[i%3], true);
             gigaSpace.write(courier);
-            findCourier.submit(new MyCourier(id, regions[i], gigaSpace, servicesDiscovery, restTemplate, tracingSpanMap));
-            logger.severe("%%%%%%%%% Added courier " + courier + ", region = " + regions[i] + " %%%%%%%%%");
+            findCourier.submit(new MyCourier(id, regions[i%3], gigaSpace, servicesDiscovery, restTemplate, tracingSpanMap));
+            logger.severe("%%%%%%%%% Added courier " + courier + ", region = " + regions[i%3] + " %%%%%%%%%");
         }
     }
 
@@ -110,7 +110,7 @@ public class DeliveryPreLoader {
             UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERING);
             OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
             try {
-                Thread.sleep(20000);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {
                 Thread.currentThread().interrupt();
             }

@@ -17,7 +17,7 @@ import static com.gigaspaces.ndemo.TracingUtils.wrap;
 
 @Component
 public class Kitchen implements Closeable {
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @Autowired
     private OrdersProxy ordersProxy;
@@ -54,7 +54,7 @@ public class Kitchen implements Closeable {
                 wrap("kitchen-job", activeSpan, () -> {
                     ordersProxy.updateOrder(request.getOrderId(), Status.PREPARING);
                     try {
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.MILLISECONDS.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
