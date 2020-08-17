@@ -3,7 +3,6 @@
 export GS_CLI_VERBOSE=true
 
 #set -ex
-set -e
 source env.sh
 
 declare -a requestIds

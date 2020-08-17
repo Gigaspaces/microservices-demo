@@ -26,13 +26,13 @@ cat > ${jsonName} <<EOF
 
 }
 EOF
-  requestId=$(curl -X POST --silent --header 'Content-Type: application/json' -d @template.json ${GATEWAY_REST}/orders/order/place | jq .)
+  requestId=$(curl -X POST --silent --header 'Content-Type: application/json' -d @${jsonName} ${GATEWAY_REST}/orders/order/place | jq .)
 }
 
 function feedOrders() {
     local count="$1"
     local threadId="$2"
-    echo "Starting feeder $threadId, batch size = $count"
+    echo "Starting feeder $threadId, batch size = $count, time= $SECONDS"
     for (( i = 0; i < ${count}; ++i )); do
         resturantIndex=$(($RANDOM % ${#resturantIds[@]}))
         menuItems=( $(jq -r ".resturantMenuList[$resturantIndex].menuItems | keys[]" response.json))
@@ -40,15 +40,17 @@ function feedOrders() {
         itemIndex=$(($RANDOM % ${#menuItems[@]}))
         place_order "${resturantIds[resturantIndex]}" "${menuItems[itemIndex]}" "template-$threadId.json"
 
-        if [[ $((i % 1000)) -eq 0 ]] ; then
-            echo "thread = $threadId"
-            echo "time = $SECONDS"
-            echo "orders count = $i"
-            echo "response = $requestId"
-        fi
+#        if [[ $((i % 1000)) -eq 0 ]] ; then
+#            echo "thread = $threadId"
+#            echo "time = $SECONDS"
+#            echo "orders count = $i"
+#            echo "response = $requestId"
+#        fi
 
         sleep "${TIME_INTERVAL}"
     done
+     echo "feeder $threadId finished"
+     echo "time = $SECONDS"
 }
 
 echo "GATEWAY_REST = ${GATEWAY_REST}"

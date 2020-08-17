@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +42,8 @@ public class DeliveryPreLoader {
     private TracingSpanMap tracingSpanMap;
 
     private ExecutorService findCourier = Executors.newFixedThreadPool(couriersCount);
+
+    private static Timer timer = new Timer(true);
 
     private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
 
@@ -95,7 +99,7 @@ public class DeliveryPreLoader {
                         wrap("deliver-order-" + orderId + "-job", orderSpan, () -> deliverOrder(delivery, orderId));
                         orderSpan.finish();
                     } else  {
-                        TimeUnit.SECONDS.sleep(5);
+                        TimeUnit.SECONDS.sleep(1);
                     }
                 } catch (Throwable t) {
                     logger.log(Level.SEVERE, "%%%%%%%%% THROWABLE %%%%%%%%", t);
@@ -109,15 +113,14 @@ public class DeliveryPreLoader {
             String ordersServiceUrl = servicesDiscovery.getOrdersServiceUrl();
             UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERING);
             OrderStatusMsg reply = restTemplate.postForEntity(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class).getBody();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-                Thread.currentThread().interrupt();
-            }
-
-            gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", false));
-            updateOrderRequest = new UpdateOrderRequest(orderId, Status.DELIVERY_DONE);
-            restTemplate.postForObject(ordersServiceUrl + "/orders/order/status", updateOrderRequest, OrderStatusMsg.class);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    gigaSpace.change(new Courier(courierId), new ChangeSet().set("available", false));
+                    UpdateOrderRequest updateOrderRequest2 = new UpdateOrderRequest(orderId, Status.DELIVERY_DONE);
+                    restTemplate.postForObject(ordersServiceUrl + "/orders/order/status", updateOrderRequest2, OrderStatusMsg.class);
+                }
+            },4000);
         }
 
 

@@ -11,13 +11,18 @@ import org.springframework.stereotype.Component;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.gigaspaces.ndemo.TracingUtils.wrap;
 
 @Component
 public class Kitchen implements Closeable {
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private Timer timer = new Timer(true);
 
     @Autowired
     private OrdersProxy ordersProxy;
@@ -53,19 +58,19 @@ public class Kitchen implements Closeable {
             try {
                 wrap("kitchen-job", activeSpan, () -> {
                     ordersProxy.updateOrder(request.getOrderId(), Status.PREPARING);
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    ordersProxy.updateOrder(request.getOrderId(), Status.PREPARATION_DONE);
-
-                    String region = gigaSpace.read(new SQLQuery<>(Restaurant.class, "id = ?", request.getRestaurantId())).getRegion();
-                    deliveryProxy.deliver(request.getOrderId(), region);
+                    TimeUnit.MILLISECONDS.sleep(4000);
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            ordersProxy.updateOrder(request.getOrderId(), Status.PREPARATION_DONE);
+                            String region = gigaSpace.read(new SQLQuery<>(Restaurant.class, "id = ?", request.getRestaurantId())).getRegion();
+                            deliveryProxy.deliver(request.getOrderId(), region);
+                        }
+                    }, 1000);
 
                     return null;
                 });
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             } catch (Exception e) {
                 e.printStackTrace();
             }
