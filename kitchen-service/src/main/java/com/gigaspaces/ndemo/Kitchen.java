@@ -54,7 +54,7 @@ public class Kitchen implements Closeable {
                 wrap("kitchen-job", activeSpan, () -> {
                     ordersProxy.updateOrder(request.getOrderId(), Status.PREPARING);
                     try {
-                        TimeUnit.MILLISECONDS.sleep(30);
+                        TimeUnit.MILLISECONDS.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
