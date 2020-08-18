@@ -14,6 +14,8 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.openspaces.core.GigaSpace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
+
 
 import static com.gigaspaces.order.model.OrderStatus.PENDING_PREPARATION;
 
@@ -38,7 +40,7 @@ public class OrdersController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
+    private static Logger logger = LoggerFactory.getLogger(OrdersController.class);
 
     @PostMapping("/order/place")
     public OrderStatusMsg placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest) throws Exception {
@@ -52,7 +54,7 @@ public class OrdersController {
             ticket.setWithCutlery(random.nextBoolean() ? 1 : 0);
             LeaseContext<Ticket> context = gigaSpace.write(ticket);
             String uid = context.getUID();
-            logger.severe("%%%%%%%%%%%% Order id is "+uid+" %%%%%%%%%%%%");
+            logger.info("Order id is "+uid);
             OrderStatusMsg response = new OrderStatusMsg();
             response.setOrderId(uid);
             response.setStatus(Status.PENDING_PREPARATION);

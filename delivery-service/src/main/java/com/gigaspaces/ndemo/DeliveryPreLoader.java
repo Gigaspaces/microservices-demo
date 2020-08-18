@@ -12,6 +12,8 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.openspaces.core.GigaSpace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -24,8 +26,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 @Component
 public class DeliveryPreLoader {
@@ -45,7 +46,7 @@ public class DeliveryPreLoader {
 
     private static Timer timer = new Timer(true);
 
-    private static Logger logger = Logger.getLogger("DEBUG_YAEL_LOGGER");
+    private static Logger logger = LoggerFactory.getLogger(DeliveryPreLoader.class);
 
     @PostConstruct
     public void setup() {
@@ -55,7 +56,7 @@ public class DeliveryPreLoader {
             Courier courier = new Courier(id, "courier-" + i, "050600000" + i, regions[i%3], true);
             gigaSpace.write(courier);
             findCourier.submit(new MyCourier(id, regions[i%3], gigaSpace, servicesDiscovery, restTemplate, tracingSpanMap));
-            logger.severe("%%%%%%%%% Added courier " + courier + ", region = " + regions[i%3] + " %%%%%%%%%");
+            logger.info("Added courier " + courier + ", region = " + regions[i%3]);
         }
     }
 
@@ -80,7 +81,7 @@ public class DeliveryPreLoader {
             this.servicesDiscovery = servicesDiscovery;
             this.restTemplate = restTemplate;
             this.tracingSpanMap = tracingSpanMap;
-            logger.severe("%%%%%%%%% Created MyCourier with region = " + region + " %%%%%%%%%");
+            logger.info("Created MyCourier with region = " + region);
         }
 
 
@@ -102,7 +103,7 @@ public class DeliveryPreLoader {
                         TimeUnit.SECONDS.sleep(1);
                     }
                 } catch (Throwable t) {
-                    logger.log(Level.SEVERE, "%%%%%%%%% THROWABLE %%%%%%%%", t);
+                    logger.error("pre loader failed to run", t);
                 }
             }
         }
