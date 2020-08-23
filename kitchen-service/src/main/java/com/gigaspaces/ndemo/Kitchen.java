@@ -58,7 +58,6 @@ public class Kitchen implements Closeable {
             try {
                 wrap("kitchen-job", activeSpan, () -> {
                     ordersProxy.updateOrder(request.getOrderId(), Status.PREPARING);
-                    TimeUnit.MILLISECONDS.sleep(4000);
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {

@@ -121,7 +121,7 @@ public class DeliveryPreLoader {
                     UpdateOrderRequest updateOrderRequest2 = new UpdateOrderRequest(orderId, Status.DELIVERY_DONE);
                     restTemplate.postForObject(ordersServiceUrl + "/orders/order/status", updateOrderRequest2, OrderStatusMsg.class);
                 }
-            },4000);
+            },1000);
         }
 
 
