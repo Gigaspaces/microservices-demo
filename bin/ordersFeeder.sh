@@ -40,13 +40,6 @@ function feedOrders() {
         itemIndex=$(($RANDOM % ${#menuItems[@]}))
         place_order "${resturantIds[resturantIndex]}" "${menuItems[itemIndex]}" "template-$threadId.json"
 
-#        if [[ $((i % 1000)) -eq 0 ]] ; then
-#            echo "thread = $threadId"
-#            echo "time = $SECONDS"
-#            echo "orders count = $i"
-#            echo "response = $requestId"
-#        fi
-
         sleep "${TIME_INTERVAL}"
     done
      echo "feeder $threadId finished"
